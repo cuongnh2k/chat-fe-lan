@@ -2,11 +2,14 @@ import {Affix, Avatar, Divider, Flex, Typography} from "antd";
 import React from "react";
 import SearchComponent from "../content/affix/SearchComponent";
 
-const {Text, Title} = Typography;
-const AffixContentComponent = ({clickCollapsed, collapsed}) => {
+const {Text} = Typography;
+const AffixContentComponent = ({collapsed}) => {
     return (
         <Affix
             offsetTop={0}
+            style={{
+                display: collapsed ? "none" : "inline"
+            }}
         >
             <Flex
                 style={{

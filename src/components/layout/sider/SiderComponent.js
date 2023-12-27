@@ -24,7 +24,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
             theme={"light"}
 
         >
-            <AffixSiderComponent/>
+            <AffixSiderComponent collapsed={collapsed}/>
             <ListObjectComponent/>
         </Sider>
     )
