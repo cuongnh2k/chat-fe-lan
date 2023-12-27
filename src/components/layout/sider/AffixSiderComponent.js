@@ -1,4 +1,4 @@
-import {Affix, Avatar, Divider, Flex, Typography} from "antd";
+import {Affix, Avatar, Button, Divider, Flex, Typography} from "antd";
 import React from "react";
 import SearchComponent from "../content/affix/SearchComponent";
 
@@ -32,6 +32,28 @@ const AffixContentComponent = ({collapsed}) => {
                 </Flex>
             </Flex>
             <SearchComponent/>
+            <Button
+                style={{
+                    marginLeft: 16,
+                    width: 100
+                }}
+                type="primary"
+                shape="round"
+                size={48}
+            >
+                Danh bạ
+            </Button>
+            <Button
+                style={{
+                    marginLeft: 16,
+                    width: 100
+                }}
+                type="primary"
+                shape="round"
+                size={48}
+            >
+                Nhóm
+            </Button>
             <Divider style={{margin: 0}}/>
         </Affix>
     )
