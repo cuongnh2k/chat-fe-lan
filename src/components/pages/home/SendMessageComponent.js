@@ -6,8 +6,7 @@ const {TextArea} = Input;
 const SendMessageComponent = () => {
     return (
         <Affix
-            style={{marginTop: 16}}
-            offsetBottom={16}
+            offsetBottom={0}
         >
             <FileAddOutlined
                 style={{

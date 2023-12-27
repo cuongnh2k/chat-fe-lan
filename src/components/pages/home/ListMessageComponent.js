@@ -4,7 +4,7 @@ import {Avatar, List, message} from 'antd';
 
 const fakeDataUrl =
     'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
-const ContainerHeight = window.innerHeight - 251;
+const ContainerHeight = window.innerHeight - 235;
 const ListMessageComponent = () => {
     const [data, setData] = useState([]);
     const appendData = () => {

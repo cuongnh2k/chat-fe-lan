@@ -1,6 +1,6 @@
 import React from 'react';
 import {Layout} from 'antd';
-import ListFriendComponent from "./ListFriendComponent";
+import ListObjectComponent from "./ListObjectComponent";
 import AffixSiderComponent from "./AffixSiderComponent";
 
 const {Sider} = Layout;
@@ -25,7 +25,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
 
         >
             <AffixSiderComponent/>
-            <ListFriendComponent/>
+            <ListObjectComponent/>
         </Sider>
     )
 }

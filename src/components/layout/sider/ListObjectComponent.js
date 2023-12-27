@@ -4,9 +4,9 @@ import {Avatar, List, message} from 'antd';
 
 const fakeDataUrl =
     'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
-const ContainerHeight = window.innerHeight - 1;
+const ContainerHeight = window.innerHeight - 122;
 
-const ListFriendComponent = () => {
+const ListObjectComponent = () => {
     const [data, setData] = useState([]);
     const appendData = () => {
         fetch(fakeDataUrl)
@@ -50,4 +50,4 @@ const ListFriendComponent = () => {
         </List>
     )
 }
-export default ListFriendComponent
+export default ListObjectComponent
