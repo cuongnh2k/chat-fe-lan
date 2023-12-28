@@ -10,12 +10,12 @@ const Api = {
         contentType: "application/json",
     },
     bAuthsSignInPOST: {
-        path: "/basic/auths/sign-in",
+        path: "/basic/auths/login",
         method: "POST",
         contentType: "application/json",
     },
     bAuthsSignUpPOST: {
-        path: "/basic/auths/sign-up",
+        path: "/basic/auths/register",
         method: "POST",
         contentType: "application/json",
     },
