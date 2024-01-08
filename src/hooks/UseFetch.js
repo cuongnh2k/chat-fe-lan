@@ -5,7 +5,6 @@ const UseFetch = (api, params = "", body = null) => {
             method: api.method,
             headers: {
                 "Content-Type": api.contentType,
-                "Api-Key": process.env.REACT_APP_API_KEY,
                 "Authorization": localStorage.getItem("token")
             },
             body: body

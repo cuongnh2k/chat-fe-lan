@@ -1,13 +1,14 @@
-import LayoutComponent from "../../layout/LayoutComponent";
 import {useState} from "react";
-import {Divider, message} from "antd";
+import {message} from "antd";
 import SignInComponent from "./SignInComponent";
 import SignUpComponent from "./SignUpComponent";
-import UpdateAccountComponent from "./updateaccount/UpdateAccountComponent";
 import ResetPasswordComponent from "./ResetPasswordComponent";
 import ActiveAccountComponent from "./ActiveAccountComponent";
+import {useNavigate} from "react-router-dom";
 
 const AccountPage = () => {
+    const token = localStorage.getItem("token")
+
     const [account, setAccount] = useState({
         activeKey: "sign-in",
         signIn: false,
@@ -16,8 +17,9 @@ const AccountPage = () => {
         activeAccountEmail: "",
         resetPasswordEmail: ""
     })
-    const token = localStorage.getItem("token")
+
     const [messageApi, contextHolder] = message.useMessage()
+    const navigate = useNavigate();
 
     const onChangeTab = (activeKey) => {
         setAccount(o => ({...o, activeKey: activeKey}))
@@ -43,13 +45,14 @@ const AccountPage = () => {
         setAccount(o => ({...o, activeKey: "sign-in", resetPasswordEmail: value}))
     }
 
-    return (
-        <LayoutComponent>
-            {contextHolder}
-            <Divider/>
-            {token
-                ? <UpdateAccountComponent onChangeTab={onChangeTab}/>
-                : (account.activeKey === "reset-password"
+    if (token) {
+        navigate("/")
+    } else {
+        return (
+            <div>
+                {contextHolder}
+                {
+                    account.activeKey === "reset-password"
                         ? <ResetPasswordComponent
                             onChangeTab={onChangeTab}
                             onResetPassword={onResetPassword}
@@ -80,9 +83,9 @@ const AccountPage = () => {
                                         )
                                 )
                         )
-                )
-            }
-        </LayoutComponent>
-    )
+                }
+            </div>
+        )
+    }
 }
 export default AccountPage
