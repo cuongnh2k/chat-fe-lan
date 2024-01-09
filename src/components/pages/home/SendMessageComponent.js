@@ -1,6 +1,6 @@
 import {Affix, Divider, Flex, Input, Upload} from "antd";
 import React from "react";
-import {SendOutlined, UploadOutlined} from "@ant-design/icons";
+import {FrownOutlined, SendOutlined, UploadOutlined} from "@ant-design/icons";
 
 const {TextArea} = Input;
 const SendMessageComponent = () => {
@@ -29,14 +29,14 @@ const SendMessageComponent = () => {
                             }}
                         />
                     </Upload>
-                    <i
+                    <FrownOutlined
                         style={{
                             fontSize: 24,
                             marginLeft: 12,
                             marginTop: -5,
                             cursor: "pointer"
                         }}
-                        className="bi bi-emoji-smile"/>
+                    />
                 </Flex>
                 <Divider
                     style={{
