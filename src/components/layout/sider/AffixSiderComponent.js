@@ -1,60 +1,97 @@
-import {Affix, Avatar, Button, Divider, Flex, Typography} from "antd";
+import {Affix, Avatar, Flex, List, Tabs} from "antd";
 import React from "react";
-import SearchComponent from "../content/affix/SearchComponent";
+import {EllipsisOutlined, UserAddOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 
-const {Text} = Typography;
 const AffixContentComponent = ({collapsed}) => {
     return (
         <Affix
-            offsetTop={0}
             style={{
                 display: collapsed ? "none" : "inline"
             }}
+            offsetTop={0}
         >
             <Flex
                 style={{
-                    padding: "8px 16px"
+                    paddingLeft: 16,
+                    paddingRight: 16,
                 }}
+                justify={"flex-end"}
             >
-                <Avatar
+                <EllipsisOutlined
                     style={{
-                        width: 48,
-                        height: 48,
-                        marginRight: 16
+                        fontSize: 24,
+                        cursor: "pointer"
                     }}
-                    src={"https://s3.ap-southeast-1.amazonaws.com/space.cuongnh2k.s3.bucket.public/bc83f21c-94fd-42a6-9589-0f789438d545/4e7c2f9e-5fbf-4afa-a665-bfadd8ec2096.jpg"}
                 />
-                <Flex
-                    vertical={true}
-                >
-                    <Text style={{fontWeight: "bold"}}>Nguyễn Thị Lan</Text>
-                    <Text>lannhatthuy@gmail.com</Text>
-                </Flex>
             </Flex>
-            <SearchComponent/>
-            <Button
+            <Flex
                 style={{
-                    marginLeft: 16,
-                    width: 100
+                    paddingLeft: 16,
+                    paddingRight: 16,
                 }}
-                type="primary"
-                shape="round"
-                size={48}
             >
-                Danh bạ
-            </Button>
-            <Button
-                style={{
-                    marginLeft: 16,
-                    width: 100
-                }}
-                type="primary"
-                shape="round"
-                size={48}
-            >
-                Nhóm
-            </Button>
-            <Divider style={{margin: 0}}/>
+                <List
+                    style={{
+                        width: "100%"
+                    }}
+                    itemLayout="horizontal"
+                    dataSource={[
+                        {
+                            title: 'Ant Design Title 1',
+                        },
+                    ]}
+                    renderItem={(item, index) => (
+                        <List.Item>
+                            <List.Item.Meta
+                                avatar={
+                                    <Avatar
+                                        style={{
+                                            width: 48,
+                                            height: 48,
+                                        }}
+                                        src={`https://randomuser.me/api/portraits/men/48.jpg`}
+                                    />
+                                }
+                                title={`Nguyễn Hữu Cường`}
+                                // description="Ant Design, a design language"
+                            />
+                        </List.Item>
+                    )}
+                />
+                <UserAddOutlined
+                    style={{
+                        fontSize: 16,
+                        paddingLeft: 16,
+                        paddingRight: 8,
+                        cursor: "pointer"
+                    }}
+                />
+                <UsergroupAddOutlined
+                    style={{
+                        fontSize: 16,
+                        paddingLeft: 8,
+                        cursor: "pointer"
+                    }}
+                />
+            </Flex>
+            <Tabs
+                style={
+                    {
+                        paddingLeft: 16,
+                        paddingRight: 16,
+                    }}
+                defaultActiveKey="1"
+                items={[
+                    {
+                        label: `Tất cả`,
+                        key: 1,
+                    },
+                    {
+                        label: `Chưa đọc`,
+                        key: 2,
+                    },
+                ]}
+            />
         </Affix>
     )
 }

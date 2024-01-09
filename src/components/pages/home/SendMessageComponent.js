@@ -1,6 +1,6 @@
-import {Affix, Input} from "antd";
+import {Affix, Flex, Input} from "antd";
 import React from "react";
-import {FileAddOutlined, SmileOutlined} from "@ant-design/icons";
+import {SendOutlined} from "@ant-design/icons";
 
 const {TextArea} = Input;
 const SendMessageComponent = () => {
@@ -8,14 +8,29 @@ const SendMessageComponent = () => {
         <Affix
             offsetBottom={0}
         >
-            <FileAddOutlined
+            <Flex
                 style={{
-                    fontSize: 24,
-                    marginRight: 10
-            }}
-            />
-            <SmileOutlined style={{fontSize: 24}}/>
-            <TextArea rows={4} placeholder="maxLength is 6" maxLength={1000}/>
+                    background: "white",
+                    paddingRight: 16
+                }}
+            >
+                <TextArea
+                    style={{
+                        overflow: "hidden",
+                        paddingLeft: 16,
+                        paddingRight: 16
+                    }}
+                    bordered={false}
+                    rows={4}
+                    placeholder="maxLength is 6"
+                    maxLength={1000}
+                />
+                <SendOutlined
+                    style={{
+                        fontSize: 24
+                    }}
+                />
+            </Flex>
         </Affix>
     )
 }

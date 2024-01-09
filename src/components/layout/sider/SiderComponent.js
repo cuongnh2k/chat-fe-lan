@@ -1,6 +1,6 @@
 import React from 'react';
 import {Layout} from 'antd';
-import ListObjectComponent from "./ListObjectComponent";
+import ListCurentChannelComponent from "./ListCurentChannelComponent";
 import AffixSiderComponent from "./AffixSiderComponent";
 
 const {Sider} = Layout;
@@ -12,7 +12,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
                 height: window.innerHeight,
                 border: "1px solid LightGrey"
             }}
-            breakpoint="md"
+            breakpoint="lg"
             collapsedWidth="1"
             onBreakpoint={(broken) => {
             }}
@@ -22,10 +22,9 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
             collapsed={collapsed}
             width={350}
             theme={"light"}
-
         >
             <AffixSiderComponent collapsed={collapsed}/>
-            <ListObjectComponent/>
+            <ListCurentChannelComponent/>
         </Sider>
     )
 }

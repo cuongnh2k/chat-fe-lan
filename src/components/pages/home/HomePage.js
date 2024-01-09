@@ -8,15 +8,16 @@ const HomePage = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
 
-    if (!token) {
-        navigate("/account")
-    } else {
+    // if (!token) {
+        // navigate("/account")
+    // }
+    // else {
         return (
             <LayoutComponent>
                 <ListMessageComponent/>
                 <SendMessageComponent/>
             </LayoutComponent>
         )
-    }
+    // }
 }
 export default HomePage

@@ -4,9 +4,9 @@ import {Avatar, List, message} from 'antd';
 
 const fakeDataUrl =
     'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
-const ContainerHeight = window.innerHeight - 122;
+const ContainerHeight = window.innerHeight - 159;
 
-const ListObjectComponent = () => {
+const ListCurentChannelComponent = () => {
     const [data, setData] = useState([]);
     const appendData = () => {
         fetch(fakeDataUrl)
@@ -29,16 +29,19 @@ const ListObjectComponent = () => {
             <VirtualList
                 data={data}
                 height={ContainerHeight}
-                itemHeight={47}
+                itemHeight={48}
                 itemKey="email"
                 onScroll={onScroll}
             >
                 {(item) => (
-                    <List.Item key={item.email}>
+                    <List.Item
+                        style={{
+                            paddingLeft: 16,
+                            paddingRight: 16
+                        }}
+                        key={item.email}
+                    >
                         <List.Item.Meta
-                            style={{
-                                paddingLeft: 16
-                            }}
                             avatar={<Avatar src={item.picture.large} style={{width: 48, height: 48}}/>}
                             title={<a href="https://ant.design">{item.name.last}</a>}
                             description={item.email}
@@ -50,4 +53,4 @@ const ListObjectComponent = () => {
         </List>
     )
 }
-export default ListObjectComponent
+export default ListCurentChannelComponent

@@ -1,26 +1,24 @@
 import React from 'react';
-import {Layout, theme} from 'antd';
+import {Layout} from 'antd';
 import AffixContentComponent from "./affix/AffixContentComponent";
 
 const {Content} = Layout;
 const ContentComponent = ({children, clickCollapsed, collapsed}) => {
 
-    const {
-        token: {colorBgContainer},
-    } = theme.useToken();
-
     return (
-        <Layout>
+        <Layout
+            style={{
+                height: window.innerHeight,
+                background: "white"
+            }}
+        >
             <AffixContentComponent clickCollapsed={clickCollapsed} collapsed={collapsed}/>
-            <Content>
-                <div
-                    style={{
-                        padding: 16,
-                        background: colorBgContainer,
-                    }}
-                >
-                    {children}
-                </div>
+            <Content
+                style={{
+                    background: "LightGrey"
+                }}
+            >
+                {children}
             </Content>
         </Layout>
     )
