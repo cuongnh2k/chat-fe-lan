@@ -1,4 +1,4 @@
-import {Affix, Divider, Flex, Input} from "antd";
+import {Affix, Divider, Flex, Input, Upload} from "antd";
 import React from "react";
 import {SendOutlined, UploadOutlined} from "@ant-design/icons";
 
@@ -16,17 +16,24 @@ const SendMessageComponent = () => {
                     paddingRight: 16
                 }}
             >
-                <Flex>
-                    <UploadOutlined
-                        style={{
-                            fontSize: 24,
-                            cursor: "pointer"
-                        }}
-                    />
+                <Flex
+                    style={{
+                        paddingTop: 5
+                    }}
+                >
+                    <Upload>
+                        <UploadOutlined
+                            style={{
+                                cursor: "pointer",
+                                fontSize: 24,
+                            }}
+                        />
+                    </Upload>
                     <i
                         style={{
                             fontSize: 24,
                             marginLeft: 12,
+                            marginTop: -5,
                             cursor: "pointer"
                         }}
                         className="bi bi-emoji-smile"/>

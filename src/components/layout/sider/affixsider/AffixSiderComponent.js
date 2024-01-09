@@ -1,6 +1,8 @@
 import {Affix, Avatar, Flex, List, Tabs} from "antd";
 import React from "react";
-import {EllipsisOutlined, UserAddOutlined, UsergroupAddOutlined} from "@ant-design/icons";
+import {EllipsisOutlined} from "@ant-design/icons";
+import AddFriendComponent from "./AddFriendComponent";
+import AddGroupComponent from "./AddGroupComponent";
 
 const AffixContentComponent = ({collapsed}) => {
     return (
@@ -58,21 +60,8 @@ const AffixContentComponent = ({collapsed}) => {
                         </List.Item>
                     )}
                 />
-                <UserAddOutlined
-                    style={{
-                        fontSize: 16,
-                        paddingLeft: 16,
-                        paddingRight: 8,
-                        cursor: "pointer"
-                    }}
-                />
-                <UsergroupAddOutlined
-                    style={{
-                        fontSize: 16,
-                        paddingLeft: 8,
-                        cursor: "pointer"
-                    }}
-                />
+                <AddFriendComponent/>
+                <AddGroupComponent/>
             </Flex>
             <Tabs
                 style={

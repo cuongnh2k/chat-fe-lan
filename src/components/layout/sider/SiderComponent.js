@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layout} from 'antd';
 import ListCurentChannelComponent from "./ListCurentChannelComponent";
-import AffixSiderComponent from "./AffixSiderComponent";
+import AffixSiderComponent from "./affixsider/AffixSiderComponent";
 
 const {Sider} = Layout;
 
