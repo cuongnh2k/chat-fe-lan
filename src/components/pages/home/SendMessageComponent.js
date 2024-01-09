@@ -1,6 +1,6 @@
-import {Affix, Flex, Input} from "antd";
+import {Affix, Divider, Flex, Input} from "antd";
 import React from "react";
-import {SendOutlined} from "@ant-design/icons";
+import {SendOutlined, UploadOutlined} from "@ant-design/icons";
 
 const {TextArea} = Input;
 const SendMessageComponent = () => {
@@ -9,27 +9,51 @@ const SendMessageComponent = () => {
             offsetBottom={0}
         >
             <Flex
+                vertical={true}
                 style={{
                     background: "white",
+                    paddingLeft: 16,
                     paddingRight: 16
                 }}
             >
-                <TextArea
+                <Flex>
+                    <UploadOutlined
+                        style={{
+                            fontSize: 24,
+                            cursor: "pointer"
+                        }}
+                    />
+                    <i
+                        style={{
+                            fontSize: 24,
+                            marginLeft: 12,
+                            cursor: "pointer"
+                        }}
+                        className="bi bi-emoji-smile"/>
+                </Flex>
+                <Divider
                     style={{
-                        overflow: "hidden",
-                        paddingLeft: 16,
-                        paddingRight: 16
-                    }}
-                    bordered={false}
-                    rows={4}
-                    placeholder="maxLength is 6"
-                    maxLength={1000}
-                />
-                <SendOutlined
-                    style={{
-                        fontSize: 24
+                        margin: 0
                     }}
                 />
+                <Flex>
+                    <TextArea
+                        style={{
+                            overflow: "hidden",
+                            resize: "none",
+                            padding: "16px 0"
+                        }}
+                        bordered={false}
+                        rows={3}
+                        placeholder="Nhập tin nhắn"
+                    />
+                    <SendOutlined
+                        style={{
+                            fontSize: 24,
+                            cursor: "pointer"
+                        }}
+                    />
+                </Flex>
             </Flex>
         </Affix>
     )
