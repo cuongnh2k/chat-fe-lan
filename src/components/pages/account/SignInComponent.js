@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Button, Card, Flex, Form, Input} from 'antd'
 import TabComponent from "../../common/TabComponent"
 import UseFetch from "../../../hooks/UseFetch"
@@ -6,58 +6,54 @@ import Api from "../../../api/Api"
 
 const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
-    const [signIn, setSignIn] = useState({email: "", password: ""})
 
-    useEffect(() => {
-            if (signIn.email !== "" && signIn.password !== "") {
-                setData(o => ({...o, loading: true}))
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.authsLoginPOST,
-                        "",
-                        JSON.stringify({
-                            email: signIn.email,
-                            password: signIn.password
-                        }))
-                    const data = await response.json();
-                    setData(o => ({...o, loading: false}))
-                    if (data.success) {
-                        localStorage.setItem("token", `Bearer ${data.data.token}`)
-                        messageApi.open({
-                            type: 'success',
-                            content: 'Đăng nhập thành công',
-                            duration: 3,
-                        });
-                        onRefreshPage()
-                    } else {
-                        if (data.errorCode === -2) {
-                            messageApi.open({
-                                type: 'error',
-                                content: 'Email không tồn tại',
-                                duration: 1,
-                            });
-                        } else if (data.errorCode === -3) {
-                            messageApi.open({
-                                type: 'error',
-                                content: 'Mật khẩu không đúng',
-                                duration: 1,
-                            });
-                        } else if (data.errorCode === -4) {
-                            messageApi.open({
-                                type: 'error',
-                                content: 'Tài khoản chưa kích hoạt',
-                                duration: 1,
-                            });
-                            onSignInActiveAccount(signIn.email)
-                        }
-                    }
+    const callApi = (values) => {
+        setData(o => ({...o, loading: true}))
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.authsLoginPOST,
+                "",
+                JSON.stringify({
+                    email: values.email,
+                    password: values.password
+                }))
+            const data = await response.json();
+            setData(o => ({...o, loading: false}))
+            if (data.success) {
+                localStorage.setItem("token", `Bearer ${data.data.token}`)
+                messageApi.open({
+                    type: 'success',
+                    content: 'Đăng nhập thành công',
+                    duration: 3,
+                });
+                onRefreshPage()
+            } else {
+                if (data.errorCode === -2) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Email không tồn tại',
+                        duration: 1,
+                    });
+                } else if (data.errorCode === -3) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Mật khẩu không đúng',
+                        duration: 1,
+                    });
+                } else if (data.errorCode === -4) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Tài khoản chưa kích hoạt',
+                        duration: 1,
+                    });
+                    onSignInActiveAccount(values.email)
                 }
-                fetchAPI()
             }
-        }, [signIn]
-    )
+        }
+        fetchAPI()
+    }
 
     const onFinish = (values) => {
-        setSignIn({email: values.email, password: values.password})
+        callApi(values)
     };
     const onFinishFailed = () => {
     };

@@ -1,6 +1,6 @@
-import {Affix, Avatar, Flex, List, Tabs} from "antd";
+import {Affix, Avatar, Flex, Input, List, Tabs} from "antd";
 import React from "react";
-import {EllipsisOutlined} from "@ant-design/icons";
+import {EllipsisOutlined, SearchOutlined} from "@ant-design/icons";
 import AddFriendComponent from "./AddFriendComponent";
 import AddGroupComponent from "./AddGroupComponent";
 
@@ -63,6 +63,20 @@ const AffixContentComponent = ({collapsed}) => {
                 <AddFriendComponent/>
                 <AddGroupComponent/>
             </Flex>
+
+            <Flex
+                style={{
+                    paddingLeft: 16,
+                    paddingRight: 16,
+                }}
+            >
+                <Input
+                    size={"large"}
+                    placeholder="default size"
+                    prefix={<SearchOutlined/>}
+                />
+            </Flex>
+
             <Tabs
                 style={
                     {
@@ -73,11 +87,15 @@ const AffixContentComponent = ({collapsed}) => {
                 items={[
                     {
                         label: `Tất cả`,
-                        key: 1,
+                        key: `Tất cả`,
                     },
                     {
-                        label: `Chưa đọc`,
-                        key: 2,
+                        label: `Bạn bè`,
+                        key: `Bạn bè`,
+                    },
+                    {
+                        label: `Nhóm`,
+                        key: `Nhóm`,
                     },
                 ]}
             />

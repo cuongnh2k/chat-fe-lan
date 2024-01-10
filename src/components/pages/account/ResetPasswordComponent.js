@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Card, Flex, Form, Input} from 'antd';
 import TabComponent from "../../common/TabComponent";
 import UseFetch from "../../../hooks/UseFetch";
@@ -6,41 +6,37 @@ import Api from "../../../api/Api";
 
 const ResetPasswordComponent = ({onChangeTab, onResetPassword, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
-    const [resetPassword, setResetPassword] = useState({email: ""})
 
-    useEffect(() => {
-            if (resetPassword.email !== "") {
-                setData(o => ({...o, loading: true}))
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.authsResetPasswordPOST,
-                        "",
-                        JSON.stringify({
-                            email: resetPassword.email,
-                        }))
-                    const data = await response.json();
-                    setData(o => ({...o, loading: false}))
-                    if (data.success) {
-                        messageApi.open({
-                            type: 'success',
-                            content: 'Mật khẩu mới đã được gửi về email của bạn',
-                            duration: 3,
-                        });
-                        onResetPassword(resetPassword.email)
-                    } else {
-                        messageApi.open({
-                            type: 'error',
-                            content: 'Email không tồn tại',
-                            duration: 1,
-                        });
-                    }
-                }
-                fetchAPI()
+    const callApi = (values) => {
+        setData(o => ({...o, loading: true}))
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.authsResetPasswordPOST,
+                "",
+                JSON.stringify({
+                    email: values.email,
+                }))
+            const data = await response.json();
+            setData(o => ({...o, loading: false}))
+            if (data.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Mật khẩu mới đã được gửi về email của bạn',
+                    duration: 3,
+                });
+                onResetPassword(values.email)
+            } else {
+                messageApi.open({
+                    type: 'error',
+                    content: 'Email không tồn tại',
+                    duration: 1,
+                });
             }
-        }, [resetPassword]
-    )
+        }
+        fetchAPI()
+    }
 
     const onFinish = (values) => {
-        setResetPassword({email: values.email})
+        callApi(values)
     };
     const onFinishFailed = () => {
     };

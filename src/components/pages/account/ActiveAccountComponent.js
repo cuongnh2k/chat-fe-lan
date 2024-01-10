@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Button, Card, Flex, Form, Input} from "antd";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
@@ -6,50 +6,46 @@ import TabComponent from "../../common/TabComponent";
 
 const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
-    const [activeAccount, setActiveAccount] = useState({email: "", verifyToken: ""})
 
-    useEffect(() => {
-            if (activeAccount.email !== "" && activeAccount.verifyToken !== "") {
-                setData(o => ({...o, loading: true}))
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.authsActivePOST,
-                        "",
-                        JSON.stringify({
-                            email: activeAccount.email,
-                            verifyToken: activeAccount.verifyToken
-                        }))
-                    const data = await response.json();
-                    setData(o => ({...o, loading: false}))
-                    if (data.success) {
-                        messageApi.open({
-                            type: 'success',
-                            content: 'Kích hoạt tài khoản thành công',
-                            duration: 3,
-                        });
-                        onActiveAccount(activeAccount.email)
-                    } else {
-                        if (data.errorCode === -5) {
-                            messageApi.open({
-                                type: 'error',
-                                content: 'Email không tồn tại',
-                                duration: 1,
-                            });
-                        } else if (data.errorCode === -6) {
-                            messageApi.open({
-                                type: 'error',
-                                content: 'Mã kích hoạt không đúng',
-                                duration: 1,
-                            });
-                        }
-                    }
+    const callApi = (values) => {
+        setData(o => ({...o, loading: true}))
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.authsActivePOST,
+                "",
+                JSON.stringify({
+                    email: values.email,
+                    verifyToken: values.verifyToken
+                }))
+            const data = await response.json();
+            setData(o => ({...o, loading: false}))
+            if (data.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Kích hoạt tài khoản thành công',
+                    duration: 3,
+                });
+                onActiveAccount(values.email)
+            } else {
+                if (data.errorCode === -5) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Email không tồn tại',
+                        duration: 1,
+                    });
+                } else if (data.errorCode === -6) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Mã kích hoạt không đúng',
+                        duration: 1,
+                    });
                 }
-                fetchAPI()
             }
-        }, [activeAccount]
-    )
+        }
+        fetchAPI()
+    }
 
     const onFinish = (values) => {
-        setActiveAccount({email: values.email, verifyToken: values.verifyToken})
+        callApi(values)
     };
     const onFinishFailed = () => {
     };

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Card, Flex, Form, Input} from 'antd';
 import TabComponent from "../../common/TabComponent";
 import UseFetch from "../../../hooks/UseFetch";
@@ -6,43 +6,39 @@ import Api from "../../../api/Api";
 
 const SignUpComponent = ({onChangeTab, onSignUp, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
-    const [signUp, setLogUp] = useState({name: "", email: "", password: ""})
 
-    useEffect(() => {
-            if (signUp.name !== "" && signUp.email !== "" && signUp.password !== "") {
-                setData(o => ({...o, loading: true}))
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.authsRegisterPOST,
-                        "",
-                        JSON.stringify({
-                            name: signUp.name,
-                            email: signUp.email,
-                            password: signUp.password
-                        }))
-                    const data = await response.json();
-                    setData(o => ({...o, loading: false}))
-                    if (data.success) {
-                        messageApi.open({
-                            type: 'success',
-                            content: "Đăng ký thành công. Vui lòng kích hoạt tài khoản",
-                            duration: 3,
-                        });
-                        onSignUp(signUp.email)
-                    } else {
-                        messageApi.open({
-                            type: 'error',
-                            content: 'Email đã tồn tại',
-                            duration: 1,
-                        });
-                    }
-                }
-                fetchAPI()
+    const callApi = (values) => {
+        setData(o => ({...o, loading: true}))
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.authsRegisterPOST,
+                "",
+                JSON.stringify({
+                    name: values.name,
+                    email: values.email,
+                    password: values.password
+                }))
+            const data = await response.json();
+            setData(o => ({...o, loading: false}))
+            if (data.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: "Đăng ký thành công. Vui lòng kích hoạt tài khoản",
+                    duration: 3,
+                });
+                onSignUp(values.email)
+            } else {
+                messageApi.open({
+                    type: 'error',
+                    content: 'Email đã tồn tại',
+                    duration: 1,
+                });
             }
-        }, [signUp]
-    )
+        }
+        fetchAPI()
+    };
 
     const onFinish = (values) => {
-        setLogUp({name: values.name, email: values.email, password: values.password})
+        callApi(values)
     };
     const onFinishFailed = () => {
     };

@@ -1,16 +1,22 @@
 import {Button, Result} from "antd";
-import LayoutComponent from "../layout/LayoutComponent";
+import {useNavigate} from "react-router-dom";
 
 const NoPage = () => {
+    const navigate = useNavigate();
     return (
-        <LayoutComponent>
-            <Result
-                status="404"
-                title="404"
-                subTitle="Sorry, the page you visited does not exist."
-                extra={<Button type="primary">Back Home</Button>}
-            />
-        </LayoutComponent>
+        <Result
+            status="404"
+            title="404"
+            subTitle="Xin lỗi, trang bạn truy cập không tồn tại."
+            extra={
+                <Button
+                    type="primary"
+                    onClick={() => navigate("/")}
+                >
+                    Quay lại
+                </Button>
+            }
+        />
     )
 }
 export default NoPage
