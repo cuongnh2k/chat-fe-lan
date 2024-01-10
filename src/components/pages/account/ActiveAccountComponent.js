@@ -12,7 +12,7 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
             if (activeAccount.email !== "" && activeAccount.verifyToken !== "") {
                 setData(o => ({...o, loading: true}))
                 const fetchAPI = async () => {
-                    const response = await UseFetch(Api.bAuthsActivePOST,
+                    const response = await UseFetch(Api.authsActivePOST,
                         "",
                         JSON.stringify({
                             email: activeAccount.email,

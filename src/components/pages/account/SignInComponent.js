@@ -4,7 +4,7 @@ import TabComponent from "../../common/TabComponent"
 import UseFetch from "../../../hooks/UseFetch"
 import Api from "../../../api/Api"
 
-const SignInComponent = ({account, onChangeTab, onSignIn, onSignInActiveAccount, messageApi}) => {
+const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
     const [signIn, setSignIn] = useState({email: "", password: ""})
 
@@ -12,7 +12,7 @@ const SignInComponent = ({account, onChangeTab, onSignIn, onSignInActiveAccount,
             if (signIn.email !== "" && signIn.password !== "") {
                 setData(o => ({...o, loading: true}))
                 const fetchAPI = async () => {
-                    const response = await UseFetch(Api.bAuthsSignInPOST,
+                    const response = await UseFetch(Api.authsLoginPOST,
                         "",
                         JSON.stringify({
                             email: signIn.email,
@@ -27,7 +27,7 @@ const SignInComponent = ({account, onChangeTab, onSignIn, onSignInActiveAccount,
                             content: 'Đăng nhập thành công',
                             duration: 3,
                         });
-                        onSignIn(true)
+                        onRefreshPage()
                     } else {
                         if (data.errorCode === -2) {
                             messageApi.open({

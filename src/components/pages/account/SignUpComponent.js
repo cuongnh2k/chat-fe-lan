@@ -4,7 +4,7 @@ import TabComponent from "../../common/TabComponent";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 
-const SignUpComponent = ({account, onChangeTab, messageApi, onSignUp}) => {
+const SignUpComponent = ({onChangeTab, onSignUp, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
     const [signUp, setLogUp] = useState({name: "", email: "", password: ""})
 
@@ -12,7 +12,7 @@ const SignUpComponent = ({account, onChangeTab, messageApi, onSignUp}) => {
             if (signUp.name !== "" && signUp.email !== "" && signUp.password !== "") {
                 setData(o => ({...o, loading: true}))
                 const fetchAPI = async () => {
-                    const response = await UseFetch(Api.bAuthsSignUpPOST,
+                    const response = await UseFetch(Api.authsRegisterPOST,
                         "",
                         JSON.stringify({
                             name: signUp.name,

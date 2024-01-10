@@ -12,7 +12,7 @@ const ResetPasswordComponent = ({onChangeTab, onResetPassword, account, messageA
             if (resetPassword.email !== "") {
                 setData(o => ({...o, loading: true}))
                 const fetchAPI = async () => {
-                    const response = await UseFetch(Api.bAuthsResetPasswordPOST,
+                    const response = await UseFetch(Api.authsResetPasswordPOST,
                         "",
                         JSON.stringify({
                             email: resetPassword.email,
