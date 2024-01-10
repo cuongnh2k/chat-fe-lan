@@ -3,7 +3,7 @@ import VirtualList from 'rc-virtual-list';
 import {Avatar, Card, Flex, List, message} from 'antd';
 
 const fakeDataUrl =
-    'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
+    'https://randomuser.me/api/?results=30&inc=name,gender,email,nat,picture&noinfo';
 const ContainerHeight = window.innerHeight - 228;
 const ListMessageComponent = () => {
     const [data, setData] = useState([]);
@@ -22,6 +22,10 @@ const ListMessageComponent = () => {
         if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
             appendData();
         }
+        console.log(e.currentTarget.scrollHeight)
+        console.log(e.currentTarget.scrollTop)
+        console.log(e.currentTarget.scrollHeight - e.currentTarget.scrollTop)
+        console.log(ContainerHeight)
     };
     return (
         <List>

@@ -11,7 +11,7 @@ const HomePage = () => {
         if (!localStorage.getItem("token")) {
             navigate("/account")
         }
-    }, [navigate]);
+    }, []);
 
     return (
         <LayoutComponent>

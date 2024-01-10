@@ -1,6 +1,6 @@
 import React from 'react';
 import {Layout} from 'antd';
-import ListCurentChannelComponent from "./ListCurentChannelComponent";
+import ListCurrentChannelComponent from "./ListCurrentChannelComponent";
 import AffixSiderComponent from "./affixsider/AffixSiderComponent";
 
 const {Sider} = Layout;
@@ -24,7 +24,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
             theme={"light"}
         >
             <AffixSiderComponent collapsed={collapsed}/>
-            <ListCurentChannelComponent/>
+            <ListCurrentChannelComponent/>
         </Sider>
     )
 }
