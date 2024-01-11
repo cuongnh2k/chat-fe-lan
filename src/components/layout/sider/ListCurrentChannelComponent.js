@@ -1,44 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import VirtualList from 'rc-virtual-list';
-import {Avatar, List} from 'antd';
-import Api from "../../../api/Api";
-import UseFetch from "../../../hooks/UseFetch";
-import {useNavigate} from "react-router-dom";
+import {Avatar, List, Typography} from 'antd';
+
+const {Text} = Typography;
 
 const ContainerHeight = window.innerHeight - 198;
 
-const ListCurrentChannelComponent = () => {
-    const [data, setData] = useState({loading: false, result: []})
-    const [search, setSearch] = useState({type: "", search: "", status: "", page: 1, size: 10})
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        setData(o => ({...o, loading: true}))
-        const fetchAPI = async () => {
-            const response = await UseFetch(Api.channelsGET,
-                `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
-            )
-            const data = await response.json();
-            setData(o => ({...o, loading: false}))
-            if (data.success) {
-                // let filter = data.result.filter(o=>)
-                setData(o => (
-                    {
-                        ...o,
-                        result: o.result.concat(data.data.content).sort((a, b) => b.createdAt - a.createdAt)
-                    }
-                ))
-            } else {
-                localStorage.removeItem("token")
-                navigate("/account")
-            }
-        }
-        fetchAPI()
-    }, [search])
+const ListCurrentChannelComponent = ({onChangePage, search, data}) => {
 
     const onScroll = (e) => {
         if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) <= ContainerHeight) {
-            setSearch(o => ({...o, page: o.page + 1}))
+            onChangePage(search.page + 1)
         }
     };
 
@@ -69,8 +41,30 @@ const ListCurrentChannelComponent = () => {
                                     src={item.avatarUrl}
                                 />
                             }
-                            title={<a href="https://ant.design">{item.name}</a>}
-                            description={item.currentMessage && item.currentMessage.content}
+                            title={
+                                <Text
+                                    style={{
+                                        width: 200,
+                                    }}
+                                    ellipsis={{
+                                        tooltip: item.name
+                                    }}
+                                >
+                                    {item.name}
+                                </Text>
+                            }
+                            description={
+                                <Text
+                                    style={{
+                                        width: 200,
+                                    }}
+                                    ellipsis={{
+                                        tooltip: item.currentMessage && item.currentMessage.content
+                                    }}
+                                >
+                                    {item.currentMessage && item.currentMessage.content}
+                                </Text>
+                            }
                         />
                         {/*<div>Content</div>*/}
                     </List.Item>

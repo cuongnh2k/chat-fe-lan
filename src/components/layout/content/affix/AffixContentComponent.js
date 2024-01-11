@@ -45,7 +45,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                                 />
                             }
                             title={item.title}
-                            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                            description="Ant Desim"
                         />
                     </List.Item>
                 )}

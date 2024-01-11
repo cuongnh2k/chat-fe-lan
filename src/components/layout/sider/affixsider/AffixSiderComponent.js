@@ -1,10 +1,14 @@
-import {Affix, Avatar, Flex, Input, List, Tabs} from "antd";
+import {Affix, Avatar, Flex, List, Typography} from "antd";
 import React from "react";
-import {EllipsisOutlined, SearchOutlined} from "@ant-design/icons";
+import {EllipsisOutlined} from "@ant-design/icons";
 import AddFriendComponent from "./AddFriendComponent";
 import AddGroupComponent from "./AddGroupComponent";
+import SearchSiderComponent from "./SearchSiderComponent";
+import TabSiderComponent from "./TabSiderComponent";
 
-const AffixContentComponent = ({collapsed}) => {
+const {Text} = Typography;
+const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
+
     return (
         <Affix
             style={{
@@ -54,7 +58,19 @@ const AffixContentComponent = ({collapsed}) => {
                                         src={`https://randomuser.me/api/portraits/men/48.jpg`}
                                     />
                                 }
-                                title={`Nguyễn Hữu Cường`}
+                                title={
+                                    <Text
+                                        style={{
+                                            width: 200,
+                                        }}
+                                        ellipsis={{
+                                            tooltip: 'Ant Design, a design language for background applications, is refined by Ant UED\n'
+                                        }}
+                                    >
+                                        Ant Design, a design language for background applications, is refined by Ant UED
+                                        Team.
+                                    </Text>
+                                }
                                 // description="Ant Design, a design language"
                             />
                         </List.Item>
@@ -63,42 +79,8 @@ const AffixContentComponent = ({collapsed}) => {
                 <AddFriendComponent/>
                 <AddGroupComponent/>
             </Flex>
-
-            <Flex
-                style={{
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                }}
-            >
-                <Input
-                    size={"large"}
-                    placeholder="default size"
-                    prefix={<SearchOutlined/>}
-                />
-            </Flex>
-
-            <Tabs
-                style={
-                    {
-                        paddingLeft: 16,
-                        paddingRight: 16,
-                    }}
-                defaultActiveKey="1"
-                items={[
-                    {
-                        label: `Tất cả`,
-                        key: `Tất cả`,
-                    },
-                    {
-                        label: `Bạn bè`,
-                        key: `Bạn bè`,
-                    },
-                    {
-                        label: `Nhóm`,
-                        key: `Nhóm`,
-                    },
-                ]}
-            />
+            <SearchSiderComponent onChangeSearch={onChangeSearch}/>
+            <TabSiderComponent onChangeType={onChangeType}/>
         </Affix>
     )
 }

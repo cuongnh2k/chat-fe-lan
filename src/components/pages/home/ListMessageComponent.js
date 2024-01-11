@@ -22,10 +22,6 @@ const ListMessageComponent = () => {
         if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
             appendData();
         }
-        console.log(e.currentTarget.scrollHeight)
-        console.log(e.currentTarget.scrollTop)
-        console.log(e.currentTarget.scrollHeight - e.currentTarget.scrollTop)
-        console.log(ContainerHeight)
     };
     return (
         <List>
