@@ -30,7 +30,8 @@ const UserSiderComponent = () => {
             itemLayout="horizontal"
             dataSource={[
                 {
-                    title: data.result && data.result.name,
+                    name: data.result && data.result.name,
+                    avatarUrl: data.result && data.result.avatarUrl
                 },
             ]}
             renderItem={(item, index) => (
@@ -42,7 +43,7 @@ const UserSiderComponent = () => {
                                     width: 48,
                                     height: 48,
                                 }}
-                                src={data.result && data.result.avatarUrl}
+                                src={item.avatarUrl}
                             />
                         }
                         title={
@@ -51,10 +52,10 @@ const UserSiderComponent = () => {
                                     width: 200,
                                 }}
                                 ellipsis={{
-                                    tooltip: data.result && data.result.name
+                                    tooltip: item.name
                                 }}
                             >
-                                {item.title}
+                                {item.name}
                             </Text>
                         }
                         description="Đang hoạt động"

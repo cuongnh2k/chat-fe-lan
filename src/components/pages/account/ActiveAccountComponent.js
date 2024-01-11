@@ -108,7 +108,8 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
                         style={{
                             margin: "0 auto",
                             width: 96,
-                            marginBottom: 20
+                            marginBottom: 20,
+                            cursor: "pointer"
                         }}
                     >
                         Quên mật khẩu

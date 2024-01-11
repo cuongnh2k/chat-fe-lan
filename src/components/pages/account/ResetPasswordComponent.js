@@ -84,7 +84,8 @@ const ResetPasswordComponent = ({onChangeTab, onResetPassword, account, messageA
                         style={{
                             margin: "0 auto",
                             width: 120,
-                            marginBottom: 20
+                            marginBottom: 20,
+                            cursor: "pointer"
                         }}
                     >
                         Kích hoạt tài khoản

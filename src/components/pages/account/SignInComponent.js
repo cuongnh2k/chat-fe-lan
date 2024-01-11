@@ -116,7 +116,8 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                         style={{
                             margin: "0 auto",
                             width: 96,
-                            marginBottom: 10
+                            marginBottom: 10,
+                            cursor: "pointer"
                         }}
                     >
                         Quên mật khẩu
@@ -126,7 +127,8 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                         style={{
                             margin: "0 auto",
                             width: 120,
-                            marginBottom: 20
+                            marginBottom: 20,
+                            cursor: "pointer"
                         }}
                     >
                         Kích hoạt tài khoản

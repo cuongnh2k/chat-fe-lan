@@ -1,13 +1,14 @@
 import React from 'react';
 import VirtualList from 'rc-virtual-list';
 import {Avatar, List, Typography} from 'antd';
+import {useSearchParams} from "react-router-dom";
 
 const {Text} = Typography;
 
 const ContainerHeight = window.innerHeight - 198;
 
 const ListCurrentChannelComponent = ({onChangePage, search, data}) => {
-
+    const [, setSearchParams] = useSearchParams()
     const onScroll = (e) => {
         if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) <= ContainerHeight) {
             onChangePage(search.page + 1)
@@ -27,9 +28,11 @@ const ListCurrentChannelComponent = ({onChangePage, search, data}) => {
                     <List.Item
                         style={{
                             paddingLeft: 16,
-                            paddingRight: 16
+                            paddingRight: 16,
+                            cursor: "pointer"
                         }}
                         key={item.id}
+                        onClick={() => setSearchParams({channelId: item.id})}
                     >
                         <List.Item.Meta
                             avatar={
