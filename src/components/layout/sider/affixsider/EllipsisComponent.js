@@ -1,7 +1,9 @@
-import {Dropdown, Flex} from "antd";
+import {Dropdown, Flex, Typography} from "antd";
 import {EllipsisOutlined} from "@ant-design/icons";
 import React from "react";
 import {useNavigate} from "react-router-dom";
+
+const {Text} = Typography;
 
 const EllipsisComponent = () => {
     const navigate = useNavigate();
@@ -9,14 +11,14 @@ const EllipsisComponent = () => {
         {
             key: '1',
             label: (
-                <a
+                <Text
                     onClick={() => {
                         localStorage.removeItem("token")
                         navigate("/account")
                     }}
                 >
                     Đăng xuất
-                </a>
+                </Text>
             ),
         },
     ];

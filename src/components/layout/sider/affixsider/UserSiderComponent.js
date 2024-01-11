@@ -3,11 +3,14 @@ import React, {useEffect, useState} from "react";
 import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import {useNavigate} from "react-router-dom";
+import UpdateUserComponent from "./UpdateUserComponent";
 
 const {Text} = Typography;
 const UserSiderComponent = () => {
     const [data, setData] = useState({loading: false, result: null})
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+
     useEffect(() => {
         setData(o => ({...o, loading: true}))
         const fetchAPI = async () => {
@@ -22,6 +25,15 @@ const UserSiderComponent = () => {
         }
         fetchAPI()
     }, [])
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <List
             style={{
@@ -35,7 +47,13 @@ const UserSiderComponent = () => {
                 },
             ]}
             renderItem={(item, index) => (
-                <List.Item>
+                <List.Item
+                    style={{
+                        cursor: "pointer"
+                    }}
+                    onClick={showModal}
+                >
+                    <UpdateUserComponent isModalOpen={isModalOpen} closeModal={closeModal}/>
                     <List.Item.Meta
                         avatar={
                             <Avatar
