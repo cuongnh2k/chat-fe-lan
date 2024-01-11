@@ -13,7 +13,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
     const [search, setSearch] = useState({
         type: "",
         search: "",
-        status: "",
+        status: "ACCEPT",
         page: 1,
         size: 10,
         loadMore: false
