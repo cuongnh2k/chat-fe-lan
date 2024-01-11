@@ -1,11 +1,11 @@
 import {Affix, Flex} from "antd";
 import React from "react";
-import {EllipsisOutlined} from "@ant-design/icons";
 import AddFriendComponent from "./AddFriendComponent";
 import AddGroupComponent from "./AddGroupComponent";
 import SearchSiderComponent from "./SearchSiderComponent";
 import TabSiderComponent from "./TabSiderComponent";
 import UserSiderComponent from "./UserSiderComponent";
+import EllipsisComponent from "./EllipsisComponent";
 
 
 const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
@@ -17,20 +17,7 @@ const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
             }}
             offsetTop={0}
         >
-            <Flex
-                style={{
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                }}
-                justify={"flex-end"}
-            >
-                <EllipsisOutlined
-                    style={{
-                        fontSize: 24,
-                        cursor: "pointer"
-                    }}
-                />
-            </Flex>
+            <EllipsisComponent/>
             <Flex
                 style={{
                     paddingLeft: 16,
