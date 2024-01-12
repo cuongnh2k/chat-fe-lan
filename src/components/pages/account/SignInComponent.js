@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
-import {Button, Card, Flex, Form, Input} from 'antd'
+import {Button, Card, Checkbox, Flex, Form, Input} from 'antd'
 import TabComponent from "../../common/TabComponent"
 import UseFetch from "../../../hooks/UseFetch"
 import Api from "../../../api/Api"
 
 const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, account, messageApi}) => {
     const [data, setData] = useState({loading: false, result: null})
+    const [remember, setRemember] = useState(true)
 
     const callApi = (values) => {
         setData(o => ({...o, loading: true}))
@@ -53,6 +54,9 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
     }
 
     const onFinish = (values) => {
+        if (remember) {
+            localStorage.setItem("account", JSON.stringify({email: values.email, password: values.password}))
+        }
         callApi(values)
     };
     const onFinishFailed = () => {
@@ -99,7 +103,17 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                                 max: 50
                             },
                         ]}
-                        initialValue={account.activeAccountEmail === "" ? account.resetPasswordEmail : account.activeAccountEmail}
+                        initialValue={
+                            account.activeAccountEmail === ""
+                                ? (account.resetPasswordEmail === ""
+                                        ? (localStorage.getItem("account") !== null
+                                                ? JSON.parse(localStorage.getItem("account")).email
+                                                : ""
+                                        )
+                                        : account.resetPasswordEmail
+                                )
+                                : account.activeAccountEmail
+                        }
                     >
                         <Input size={"large"}/>
                     </Form.Item>
@@ -134,8 +148,27 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                                 pattern: /^.{8,16}$/
                             },
                         ]}
+                        initialValue={
+                            localStorage.getItem("account") !== null
+                                ? JSON.parse(localStorage.getItem("account")).password
+                                : ""
+                        }
                     >
                         <Input.Password size={"large"}/>
+                    </Form.Item>
+                    <Form.Item
+                        name="remember"
+                        valuePropName="checked"
+                        wrapperCol={{
+                            offset: 0,
+                            span: 24,
+                        }}
+                    >
+                        <Checkbox
+                            onClick={() => setRemember(!remember)}
+                        >
+                            Nhớ mật khẩu
+                        </Checkbox>
                     </Form.Item>
                     <div
                         onClick={o => onChangeTab("reset-password")}
