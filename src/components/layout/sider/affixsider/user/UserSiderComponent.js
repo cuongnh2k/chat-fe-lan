@@ -19,7 +19,7 @@ const UserSiderComponent = () => {
             const response = await UseFetch(Api.usersGET,)
             const res = await response.json();
             if (res.success) {
-                setData(o => ({...o, result: res.data}))
+                setData(o => ({...o, loading: false, result: res.data}))
             } else {
                 localStorage.removeItem("token")
                 navigate("/account")
@@ -84,7 +84,8 @@ const UserSiderComponent = () => {
                     </List.Item>
                 )}
             />
-            <UpdateUserComponent isModalOpen={isModalOpen} closeModal={closeModal} onRefresh={onRefresh} data={data} messageApi={messageApi}/>
+            <UpdateUserComponent isModalOpen={isModalOpen} closeModal={closeModal} onRefresh={onRefresh} data={data}
+                                 messageApi={messageApi}/>
             {contextHolder}
         </>
     )

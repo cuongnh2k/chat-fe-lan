@@ -1,14 +1,15 @@
 import {Button, Flex, Form, Input, Modal, Typography} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {EditOutlined} from "@ant-design/icons";
-import UseFetch from "../../../../hooks/UseFetch";
-import Api from "../../../../api/Api";
+import {useNavigate} from "react-router-dom";
+import UseFetch from "../../../../../../hooks/UseFetch";
+import Api from "../../../../../../api/Api";
 
-const {Text, Link} = Typography;
+const {Text} = Typography;
 
-const UpdateNameComponent = ({onChangeTab, data, messageApi}) => {
+const UpdateNameComponent = ({onRefresh, data, messageApi}) => {
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState("")
+    const navigate = useNavigate();
     const showModal = () => {
         setOpen(true);
     };
@@ -19,27 +20,26 @@ const UpdateNameComponent = ({onChangeTab, data, messageApi}) => {
         setOpen(false);
     };
 
-    useEffect(() => {
-            if (name !== "") {
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.uUsersPATCH, "", JSON.stringify({name: name}))
-                    const data = await response.json();
-                    if (data.success) {
-                        messageApi.success("Cập nhật tên thành công")
-                    } else {
-                        messageApi.error("Cập nhật tên thất bại")
-                        localStorage.removeItem("token")
-                        onChangeTab("sign-in")
-                    }
-                }
-                fetchAPI()
-            }
-        },
-        [name]
-    )
-
     const onFinish = (values) => {
-        setName(values.name)
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.usersPATCH,
+                "",
+                JSON.stringify({name: values.name})
+            )
+            const data = await response.json();
+            if (data.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Cập nhật tên thành công',
+                    duration: 3,
+                });
+                onRefresh()
+            } else {
+                localStorage.removeItem("token")
+                navigate("/account")
+            }
+        }
+        fetchAPI()
     };
     const onFinishFailed = () => {
     };
@@ -51,8 +51,7 @@ const UpdateNameComponent = ({onChangeTab, data, messageApi}) => {
             }}
             justify="center"
         >
-            <Text>{name === "" ? (data.result && data.result.local.name) : name} </Text>
-            <Text> <EditOutlined onClick={showModal}/></Text>
+            <Text>{data.result && data.result.name} <EditOutlined onClick={showModal}/></Text>
             <Modal
                 open={open}
                 onOk={handleOk}
@@ -65,10 +64,10 @@ const UpdateNameComponent = ({onChangeTab, data, messageApi}) => {
                     }}
                     name="basic"
                     labelCol={{
-                        span: 2,
+                        span: 0,
                     }}
                     wrapperCol={{
-                        span: 22,
+                        span: 24,
                     }}
                     initialValues={{
                         remember: true,
@@ -78,15 +77,19 @@ const UpdateNameComponent = ({onChangeTab, data, messageApi}) => {
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="Tên"
+                        wrapperCol={{
+                            offset: 2,
+                            span: 20
+                        }}
                         name="name"
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập tên',
+                                message: 'Tên từ 1-50 ký tự.',
+                                pattern: /^.{1,50}$/
                             },
                         ]}
-                        initialValue={data.result && data.result.local.name}
+                        initialValue={data.result && data.result.name}
                     >
                         <Input/>
                     </Form.Item>

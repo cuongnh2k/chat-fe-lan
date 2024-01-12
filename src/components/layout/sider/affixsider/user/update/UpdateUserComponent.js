@@ -1,6 +1,7 @@
-import {Modal, Typography} from "antd";
+import {Flex, Modal, Typography} from "antd";
 import React from "react";
 import UpdateAvatarComponent from "./UpdateAvatarComponent";
+import UpdateNameComponent from "./UpdateNameComponent";
 
 const {Text} = Typography;
 
@@ -21,18 +22,16 @@ const UpdateUserComponent = ({isModalOpen, closeModal, onRefresh, data, messageA
         >
 
             <UpdateAvatarComponent onRefresh={onRefresh} data={data} messageApi={messageApi}/>
-            {/*<Flex*/}
-            {/*    justify="center"*/}
-            {/*    style={{*/}
-            {/*        marginTop: 16,*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    <Text>{data.result && data.result.local.email}</Text>*/}
-            {/*</Flex>*/}
-            {/*<UpdateNameComponent onChangeTab={onChangeTab} data={data} messageApi={messageApi}/>*/}
+            <Flex
+                justify="center"
+                style={{
+                    marginTop: 16,
+                }}
+            >
+                <Text>{data.result && data.result.email}</Text>
+            </Flex>
+            <UpdateNameComponent onRefresh={onRefresh} data={data} messageApi={messageApi}/>
             {/*<UpdatePasswordComponent onChangeTab={onChangeTab} messageApi={messageApi}/>*/}
-            {/*<SignOutComponent onChangeTab={onChangeTab} messageApi={messageApi}/>*/}
-
         </Modal>
     )
 }
