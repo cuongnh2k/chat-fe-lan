@@ -57,6 +57,7 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
                 style={{
                     width: "100%",
                     maxWidth: 500,
+                    marginTop: 20
                 }}
             >
                 <TabComponent onChangeTab={onChangeTab} activeKey={account.activeKey}/>

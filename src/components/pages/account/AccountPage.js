@@ -49,7 +49,7 @@ const AccountPage = () => {
     }
 
     return (
-        <div>
+        <div style={{background: "LightGrey", height: window.innerHeight}}>
             {contextHolder}
             {
                 account.activeKey === "reset-password"
