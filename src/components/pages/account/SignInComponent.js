@@ -65,16 +65,17 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                 style={{
                     width: "100%",
                     maxWidth: 500,
+                    marginTop: 20
                 }}
             >
                 <TabComponent onChangeTab={onChangeTab} activeKey={account.activeKey}/>
                 <Form
                     name="basic"
                     labelCol={{
-                        span: 4,
+                        span: 24,
                     }}
                     wrapperCol={{
-                        span: 20,
+                        span: 24,
                     }}
                     initialValues={{
                         remember: true,
@@ -89,13 +90,18 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập đúng định dạng email',
+                                message: 'Sai định dạng.',
                                 type: "email"
+                            },
+                            {
+                                required: false,
+                                message: 'Chứa tối đa 50 ký tự.',
+                                max: 50
                             },
                         ]}
                         initialValue={account.activeAccountEmail === "" ? account.resetPasswordEmail : account.activeAccountEmail}
                     >
-                        <Input/>
+                        <Input size={"large"}/>
                     </Form.Item>
 
                     <Form.Item
@@ -104,12 +110,32 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                         rules={[
                             {
                                 required: true,
-                                message: 'Mật khẩu từ 8-16 ký tự. Chứa ít nhất 1 ký tự in hoa, 1 ký tự thường, 1 ký tự số, 1 ký tự ặc biệt',
-                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,16}$/
+                                message: 'Chứa 1 ký số.',
+                                pattern: /^(?=.*\d).*$/
+                            },
+                            {
+                                required: true,
+                                message: 'Chứa 1 ký tự ặc biệt.',
+                                pattern: /^(?=.*[\W]).*$/
+                            },
+                            {
+                                required: true,
+                                message: 'Chứa ít nhất 1 ký tự in hoa.',
+                                pattern: /^(?=.*[A-Z]).*$/
+                            },
+                            {
+                                required: true,
+                                message: 'Chứa ít nhất 1 ký tự in thường.',
+                                pattern: /^(?=.*[a-z]).*$/
+                            },
+                            {
+                                required: true,
+                                message: 'Chứa từ 8-16 ký tự.',
+                                pattern: /^.{8,16}$/
                             },
                         ]}
                     >
-                        <Input.Password/>
+                        <Input.Password size={"large"}/>
                     </Form.Item>
                     <div
                         onClick={o => onChangeTab("reset-password")}
@@ -142,15 +168,16 @@ const SignInComponent = ({onChangeTab, onRefreshPage, onSignInActiveAccount, acc
                         <div
                             style={{
                                 margin: "0 auto",
-                                width: 53
+                                width: 100
                             }}
                         >
                             <Button
                                 disabled={data.loading}
                                 type="primary"
                                 htmlType="submit"
+                                size={"large"}
                             >
-                                Gửi
+                                Đăng nhập
                             </Button>
                         </div>
                     </Form.Item>

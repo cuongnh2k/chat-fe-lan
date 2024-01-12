@@ -53,7 +53,7 @@ const UserSiderComponent = () => {
                     }}
                     onClick={showModal}
                 >
-                    <UpdateUserComponent isModalOpen={isModalOpen} closeModal={closeModal}/>
+                    {/*<UpdateUserComponent isModalOpen={isModalOpen} closeModal={closeModal}/>*/}
                     <List.Item.Meta
                         avatar={
                             <Avatar

@@ -63,10 +63,10 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
                 <Form
                     name="basic"
                     labelCol={{
-                        span: 6,
+                        span: 24,
                     }}
                     wrapperCol={{
-                        span: 18,
+                        span: 24,
                     }}
                     initialValues={{
                         remember: true,
@@ -81,13 +81,18 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập đúng định dạng email',
+                                message: 'Sai định dạng.',
                                 type: "email"
+                            },
+                            {
+                                required: false,
+                                message: 'Chứa tối đa 50 ký tự.',
+                                max: 50
                             },
                         ]}
                         initialValue={account.signUpEmail === "" ? account.signInActiveAccountEmail : account.signUpEmail}
                     >
-                        <Input/>
+                        <Input size={"large"}/>
                     </Form.Item>
 
                     <Form.Item
@@ -96,12 +101,12 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập đúng định dạng mã kích hoạt',
+                                message: 'Sai định dạng.',
                                 pattern: /^\d{4}$/
                             },
                         ]}
                     >
-                        <Input.Password/>
+                        <Input.Password size={"large"}/>
                     </Form.Item>
                     <div
                         onClick={o => onChangeTab("reset-password")}
@@ -123,15 +128,16 @@ const ActiveAccountComponent = ({onChangeTab, onActiveAccount, account, messageA
                         <div
                             style={{
                                 margin: "0 auto",
-                                width: 53
+                                width: 150
                             }}
                         >
                             <Button
                                 disabled={data.loading}
                                 type="primary"
                                 htmlType="submit"
+                                size={"large"}
                             >
-                                Gửi
+                                Kích hoạt tài khoản
                             </Button>
                         </div>
                     </Form.Item>

@@ -48,16 +48,17 @@ const ResetPasswordComponent = ({onChangeTab, onResetPassword, account, messageA
                 style={{
                     width: "100%",
                     maxWidth: 500,
+                    marginTop: 20
                 }}
             >
                 <TabComponent onChangeTab={onChangeTab} activeKey={account.activeKey}/>
                 <Form
                     name="basic"
                     labelCol={{
-                        span: 4,
+                        span: 24,
                     }}
                     wrapperCol={{
-                        span: 20,
+                        span: 24,
                     }}
                     initialValues={{
                         remember: true,
@@ -72,12 +73,17 @@ const ResetPasswordComponent = ({onChangeTab, onResetPassword, account, messageA
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập đúng định dạng email',
+                                message: 'Sai định dạng.',
                                 type: "email"
+                            },
+                            {
+                                required: false,
+                                message: 'Chứa tối đa 50 ký tự.',
+                                max: 50
                             },
                         ]}
                     >
-                        <Input/>
+                        <Input size={"large"}/>
                     </Form.Item>
                     <div
                         onClick={o => onChangeTab("active-account")}
@@ -99,15 +105,16 @@ const ResetPasswordComponent = ({onChangeTab, onResetPassword, account, messageA
                         <div
                             style={{
                                 margin: "0 auto",
-                                width: 53
+                                width: 132
                             }}
                         >
                             <Button
                                 disabled={data.loading}
                                 type="primary"
                                 htmlType="submit"
+                                size={"large"}
                             >
-                                Gửi
+                                Đặt lại mật khẩu
                             </Button>
                         </div>
                     </Form.Item>

@@ -7,6 +7,7 @@ const TabComponent = ({activeKey, onChangeTab}) => {
             activeKey={activeKey}
             onChange={activeKey => onChangeTab(activeKey)}
             centered
+            size={"large"}
             items={
                 [
                     {
