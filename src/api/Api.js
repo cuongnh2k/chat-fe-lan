@@ -85,7 +85,7 @@ const Api = {
         contentType: "application/json",
     },
     filesFileIdDELETE: {
-        path: "/user/files/{fileId}",
+        path: "/user/files/",
         method: "DELETE",
         contentType: "application/json",
     },
@@ -97,6 +97,11 @@ const Api = {
     usersGET: {
         path: "/user/users",
         method: "GET",
+        contentType: "application/json",
+    },
+    usersPATCH: {
+        path: "/user/users",
+        method: "PATCH",
         contentType: "application/json",
     },
     usersToAddFriendGET: {

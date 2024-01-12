@@ -4,7 +4,7 @@ import AddFriendComponent from "./AddFriendComponent";
 import AddGroupComponent from "./AddGroupComponent";
 import SearchSiderComponent from "./SearchSiderComponent";
 import TabSiderComponent from "./TabSiderComponent";
-import UserSiderComponent from "./UserSiderComponent";
+import UserSiderComponent from "./user/UserSiderComponent";
 import EllipsisComponent from "./EllipsisComponent";
 
 
