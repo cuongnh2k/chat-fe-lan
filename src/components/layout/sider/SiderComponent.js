@@ -21,34 +21,36 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setData(o => ({...o, loading: true}))
-        const fetchAPI = async () => {
-            const response = await UseFetch(Api.channelsGET,
-                `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
-            )
-            const res = await response.json();
-            if (res.success) {
-                let list
-                if (!search.loadMore) {
-                    list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
-                } else {
-                    list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
-                }
-                list = [...new Map(list.map(item => [item["id"], item])).values()];
-                list.sort((a, b) => b.createdAt - a.createdAt)
-                setData(o => (
-                    {
-                        ...o,
-                        loading: false,
-                        result: list
+        if (!data.loading) {
+            setData(o => ({...o, loading: true}))
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsGET,
+                    `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
+                )
+                const res = await response.json();
+                if (res.success) {
+                    let list
+                    if (!search.loadMore) {
+                        list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
+                    } else {
+                        list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
                     }
-                ))
-            } else {
-                localStorage.removeItem("token")
-                navigate("/account")
+                    list = [...new Map(list.map(item => [item["id"], item])).values()];
+                    list.sort((a, b) => b.createdAt - a.createdAt)
+                    setData(o => (
+                        {
+                            ...o,
+                            loading: false,
+                            result: list
+                        }
+                    ))
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
             }
+            fetchAPI()
         }
-        fetchAPI()
     }, [search])
 
     const onChangeSearch = (value) => {
@@ -66,7 +68,8 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
         <Sider
             style={{
                 height: window.innerHeight,
-                border: "1px solid LightGrey"
+                border: "1px solid LightGrey",
+
             }}
             breakpoint="md"
             collapsedWidth="1"

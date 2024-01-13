@@ -34,57 +34,59 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
             }}
             offsetTop={0}
         >
-            {collapsed
-                ? <MenuUnfoldOutlined
+            <div>
+                {collapsed
+                    ? <MenuUnfoldOutlined
+                        style={{
+                            fontSize: 24,
+                        }}
+                        onClick={() => clickCollapsed()}
+                    />
+                    : <MenuFoldOutlined
+                        style={{
+                            fontSize: 24,
+                        }}
+                        onClick={() => clickCollapsed()}
+                    />
+                }
+                <List
                     style={{
-                        fontSize: 24,
+                        paddingLeft: 16,
+                        paddingRight: 16,
                     }}
-                    onClick={() => clickCollapsed()}
+                    itemLayout="horizontal"
+                    dataSource={[
+                        {
+                            name: data.result && data.result.name,
+                            avatarUrl: data.result && data.result.avatarUrl
+                        },
+                    ]}
+                    renderItem={(item, index) => (
+                        <List.Item>
+                            <List.Item.Meta
+                                avatar={data.result
+                                    ? <Avatar
+                                        style={{
+                                            width: 48,
+                                            height: 48,
+                                        }}
+                                        src={item.avatarUrl}
+                                    />
+                                    : null
+                                }
+                                title={item.name}
+                                description={data.result && `Đang hoạt động`}
+                            />
+                        </List.Item>
+                    )}
                 />
-                : <MenuFoldOutlined
+                <Divider
                     style={{
-                        fontSize: 24,
+                        margin: 0,
+                        display: "none"
                     }}
-                    onClick={() => clickCollapsed()}
                 />
-            }
-            <List
-                style={{
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                }}
-                itemLayout="horizontal"
-                dataSource={[
-                    {
-                        name: data.result && data.result.name,
-                        avatarUrl: data.result && data.result.avatarUrl
-                    },
-                ]}
-                renderItem={(item, index) => (
-                    <List.Item>
-                        <List.Item.Meta
-                            avatar={data.result
-                                ? <Avatar
-                                    style={{
-                                        width: 48,
-                                        height: 48,
-                                    }}
-                                    src={item.avatarUrl}
-                                />
-                                : null
-                            }
-                            title={item.name}
-                            description={data.result && `Đang hoạt động`}
-                        />
-                    </List.Item>
-                )}
-            />
-            <Divider
-                style={{
-                    margin: 0,
-                    display: "none"
-                }}
-            />
+            </div>
         </Affix>
     )
 }

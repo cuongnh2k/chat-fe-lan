@@ -17,19 +17,21 @@ const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
             }}
             offsetTop={0}
         >
-            <EllipsisComponent/>
-            <Flex
-                style={{
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                }}
-            >
-                <UserSiderComponent/>
-                <AddFriendComponent/>
-                <AddGroupComponent/>
-            </Flex>
-            <SearchSiderComponent onChangeSearch={onChangeSearch}/>
-            <TabSiderComponent onChangeType={onChangeType}/>
+            <div>
+                <EllipsisComponent/>
+                <Flex
+                    style={{
+                        paddingLeft: 16,
+                        paddingRight: 16,
+                    }}
+                >
+                    <UserSiderComponent/>
+                    <AddFriendComponent/>
+                    <AddGroupComponent/>
+                </Flex>
+                <SearchSiderComponent onChangeSearch={onChangeSearch}/>
+                <TabSiderComponent onChangeType={onChangeType}/>
+            </div>
         </Affix>
     )
 }
