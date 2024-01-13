@@ -9,6 +9,7 @@ const {Text} = Typography;
 
 const UpdateNameComponent = ({onRefresh, data, messageApi}) => {
     const [open, setOpen] = useState(false);
+    const [loading, setLoadling] = useState(false)
     const navigate = useNavigate();
     const showModal = () => {
         setOpen(true);
@@ -22,12 +23,14 @@ const UpdateNameComponent = ({onRefresh, data, messageApi}) => {
 
     const onFinish = (values) => {
         const fetchAPI = async () => {
+            setLoadling(true)
             const response = await UseFetch(Api.usersPATCH,
                 "",
                 JSON.stringify({name: values.name})
             )
             const data = await response.json();
             if (data.success) {
+                setLoadling(false)
                 messageApi.open({
                     type: 'success',
                     content: 'Cập nhật tên thành công',
@@ -77,9 +80,13 @@ const UpdateNameComponent = ({onRefresh, data, messageApi}) => {
                     autoComplete="off"
                 >
                     <Form.Item
+                        style={{
+                            marginLeft: 30,
+                            marginRight: 30
+                        }}
                         wrapperCol={{
-                            offset: 2,
-                            span: 20
+                            offset: 0,
+                            span: 24
                         }}
                         name="name"
                         rules={[
@@ -91,7 +98,7 @@ const UpdateNameComponent = ({onRefresh, data, messageApi}) => {
                         ]}
                         initialValue={data.result && data.result.name}
                     >
-                        <Input/>
+                        <Input placeholder={"Nhập tên"}/>
                     </Form.Item>
                     <Form.Item
                         wrapperCol={{
@@ -102,11 +109,11 @@ const UpdateNameComponent = ({onRefresh, data, messageApi}) => {
                         <div
                             style={{
                                 margin: "0 auto",
-                                width: 53
+                                width: 87
                             }}
                         >
                             <Button
-                                disabled={data.loading}
+                                disabled={loading}
                                 type="primary"
                                 htmlType="submit"
                             >

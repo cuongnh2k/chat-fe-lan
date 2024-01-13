@@ -2,6 +2,7 @@ import {Flex, Modal, Typography} from "antd";
 import React from "react";
 import UpdateAvatarComponent from "./UpdateAvatarComponent";
 import UpdateNameComponent from "./UpdateNameComponent";
+import UpdatePasswordComponent from "./UpdatePasswordComponent";
 
 const {Text} = Typography;
 
@@ -31,7 +32,7 @@ const UpdateUserComponent = ({isModalOpen, closeModal, onRefresh, data, messageA
                 <Text>{data.result && data.result.email}</Text>
             </Flex>
             <UpdateNameComponent onRefresh={onRefresh} data={data} messageApi={messageApi}/>
-            {/*<UpdatePasswordComponent onChangeTab={onChangeTab} messageApi={messageApi}/>*/}
+            <UpdatePasswordComponent messageApi={messageApi}/>
         </Modal>
     )
 }

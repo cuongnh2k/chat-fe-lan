@@ -107,12 +107,12 @@ const SignUpComponent = ({onChangeTab, onSignUp, account, messageApi}) => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Chứa 1 ký số.',
+                                message: 'Chứa ít nhất 1 ký số.',
                                 pattern: /^(?=.*\d).*$/
                             },
                             {
                                 required: true,
-                                message: 'Chứa 1 ký tự ặc biệt.',
+                                message: 'Chứa ít nhất 1 ký tự ặc biệt.',
                                 pattern: /^(?=.*[\W]).*$/
                             },
                             {
