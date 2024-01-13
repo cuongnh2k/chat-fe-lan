@@ -1,9 +1,36 @@
 import {Affix, Divider, Flex, Input, Upload} from "antd";
-import React from "react";
+import React, {useState} from "react";
 import {FrownOutlined, SendOutlined, UploadOutlined} from "@ant-design/icons";
+import UseFetch from "../../../hooks/UseFetch";
+import Api from "../../../api/Api";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 const {TextArea} = Input;
 const SendMessageComponent = () => {
+    const [data, setData] = useState({loading: false})
+    const [message, setMessage] = useState({content: ""})
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams()
+    const send = () => {
+        if (message.content !== "") {
+            setData(o => ({...o, loading: true}))
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
+                    `${searchParams.get("channelId")}/messages`,
+                    JSON.stringify({content: message.content})
+                )
+                const res = await response.json();
+                if (res.success) {
+                    setData(o => ({...o, loading: false,}))
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
+            }
+            fetchAPI()
+        }
+    }
+
     return (
         <Affix
             offsetBottom={0}
@@ -12,13 +39,13 @@ const SendMessageComponent = () => {
                 vertical={true}
                 style={{
                     background: "white",
-                    paddingLeft: 16,
-                    paddingRight: 16
                 }}
             >
                 <Flex
                     style={{
-                        paddingTop: 5
+                        paddingTop: 5,
+                        paddingLeft: 16,
+                        paddingRight: 16
                     }}
                 >
                     <Upload>
@@ -32,10 +59,20 @@ const SendMessageComponent = () => {
                     <FrownOutlined
                         style={{
                             fontSize: 24,
-                            marginLeft: 12,
+                            marginLeft: 16,
                             marginTop: -5,
                             cursor: "pointer"
                         }}
+                    />
+                    <div style={{width: "100%"}}></div>
+                    <SendOutlined
+                        style={{
+                            fontSize: 24,
+                            marginLeft: 12,
+                            marginTop: -5,
+                        }}
+                        disabled={true}
+                        onClick={() => send()}
                     />
                 </Flex>
                 <Divider
@@ -43,24 +80,17 @@ const SendMessageComponent = () => {
                         margin: 0
                     }}
                 />
-                <Flex>
-                    <TextArea
-                        style={{
-                            overflow: "hidden",
-                            resize: "none",
-                            padding: "16px 0"
-                        }}
-                        bordered={false}
-                        rows={3}
-                        placeholder="Nhập tin nhắn"
-                    />
-                    <SendOutlined
-                        style={{
-                            fontSize: 24,
-                            cursor: "pointer"
-                        }}
-                    />
-                </Flex>
+                <TextArea
+                    style={{
+                        // overflow: "hidden",
+                        resize: "none",
+                        padding: 16
+                    }}
+                    bordered={false}
+                    rows={3}
+                    placeholder="Nhập tin nhắn"
+                    onChange={(e) => setMessage(o => ({...o, content: e.target.value}))}
+                />
             </Flex>
         </Affix>
     )

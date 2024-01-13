@@ -70,7 +70,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsChannelIdMessagesPOST: {
-        path: "/user/channels/{channelId}/messages",
+        path: "/user/channels/",
         method: "POST",
         contentType: "application/json",
     },
