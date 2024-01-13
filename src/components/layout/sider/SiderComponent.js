@@ -15,7 +15,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
         search: "",
         status: "ACCEPT",
         page: 1,
-        size: 10,
+        size: 20,
         loadMore: false
     })
     const navigate = useNavigate();

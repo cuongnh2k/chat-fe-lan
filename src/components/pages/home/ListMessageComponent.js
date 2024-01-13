@@ -1,44 +1,92 @@
 import React, {useEffect, useState} from 'react';
 import VirtualList from 'rc-virtual-list';
-import {Avatar, Card, Flex, List, message} from 'antd';
+import {Avatar, Card, Flex, List, Typography} from 'antd';
+import {useSearchParams} from "react-router-dom";
+import UseFetch from "../../../hooks/UseFetch";
+import Api from "../../../api/Api";
 
-const fakeDataUrl =
-    'https://randomuser.me/api/?results=30&inc=name,gender,email,nat,picture&noinfo';
+const {Text} = Typography;
+
 const ContainerHeight = window.innerHeight - 228;
 const ListMessageComponent = () => {
-    const [data, setData] = useState([]);
-    const appendData = () => {
-        fetch(fakeDataUrl)
-            .then((res) => res.json())
-            .then((body) => {
-                setData(data.concat(body.results));
-                message.success(`${body.results.length} more items loaded!`);
-            });
-    };
+    const [data, setData] = useState({loading: false, result: []})
+    const [searchParams] = useSearchParams()
+    const [search, setSearch] = useState(
+        {
+            channelId: searchParams.get("channelId"),
+            content: "",
+            page: 1,
+            size: 100
+        })
+
+    const token = localStorage.getItem("token")
+    let sub = ""
+    try {
+        sub = JSON.parse(atob(token.split('.')[1])).sub
+    } catch (o) {
+    }
+
     useEffect(() => {
-        appendData();
-    }, []);
+        setData(o => ({...o, loading: true}))
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.channelsChannelIdMessagesGET,
+                `${search.channelId}/messages?content=${search.content}&page=${search.page}&size=${search.size}`
+            )
+            const res = await response.json();
+            if (res.success) {
+                let list
+                // if (!search.loadMore) {
+                    list = res.data.content.sort((a, b) => b.createdAt - a.createdAt)
+                // } else {
+                //     list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
+                // }
+                // list = [...new Map(list.map(item => [item["id"], item])).values()];
+                // list.sort((a, b) => b.createdAt - a.createdAt)
+                setData(o => (
+                    {
+                        ...o,
+                        loading: false,
+                        result: list
+                    }
+                ))
+            } else {
+                setData(o => (
+                    {
+                        ...o,
+                        loading: false,
+                        result: []
+                    }
+                ))
+            }
+        }
+        fetchAPI()
+    }, [search]);
+
     const onScroll = (e) => {
-        if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
-            appendData();
+        if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) <= ContainerHeight) {
+            // setSearch(search.page + 1)
         }
     };
+    window.scrollTo(0, document.body.scrollHeight);
     return (
         <List>
             <VirtualList
-                data={data}
+                style={{
+                    overflowAnchor: "auto"
+                }}
+                data={data.result}
                 height={ContainerHeight}
                 itemHeight={47}
                 itemKey="email"
                 onScroll={onScroll}
+                direction="ltr"
             >
                 {(item, index) => (
-                    index % 2 === 0
+                    item.sender.id !== sub
                         ? <Flex
+                            key={item.id}
                             style={{
-                                paddingLeft: 16,
-                                paddingRight: 16,
-                                paddingTop: 16
+                                margin: "8px 16px 8px 16px"
                             }}
                             // justify={"flex-start"}
                         >
@@ -48,29 +96,24 @@ const ListMessageComponent = () => {
                                     height: 48,
                                     marginRight: 16
                                 }}
-                                src={`https://randomuser.me/api/portraits/men/48.jpg`}
+                                src={item.sender.avatarUrl}
                             />
                             <Card
                                 style={{
-                                    maxWidth: 600
+                                    maxWidth: 600,
                                 }}
                                 size="small"
                                 bordered={false}
                             >
-                                <p>Dân Trí là một tờ báo điện tử trực thuộc Bộ Lao động - Thương binh và Xã hội. Theo
-                                    thống
-                                    kê của Google, đến nay, mỗi tháng có bình quân Dân trí có 900 triệu lượt đọc; mỗi
-                                    ngày
-                                    có bình quân trên 10 triệu lượt người truy cập vào báo Dân trí tiếng Việt và tiếng
-                                    Anh,
-                                    trong đó 20% người truy cập từ nước ngoài. Wikipedia</p>
+                                <Text>
+                                    {item.content}
+                                </Text>
                             </Card>
                         </Flex>
                         : <Flex
+                            key={item.id}
                             style={{
-                                paddingLeft: 16,
-                                paddingRight: 16,
-                                paddingTop: 16
+                                margin: "8px 16px 8px 16px"
                             }}
                             justify={"flex-end"}
                         >
@@ -81,7 +124,9 @@ const ListMessageComponent = () => {
                                 size="small"
                                 bordered={false}
                             >
-                                <p>Dân Trí là một tờ báo. Wikipedia</p>
+                                <Text>
+                                    {item.content}
+                                </Text>
                             </Card>
                         </Flex>
                 )}

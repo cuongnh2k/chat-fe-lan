@@ -45,7 +45,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsChannelIdMessagesGET: {
-        path: "/user/channels/{channelId}/messages",
+        path: "/user/channels/",
         method: "GET",
         contentType: "application/json",
     },
