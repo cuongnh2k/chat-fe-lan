@@ -13,7 +13,7 @@ const ListMessageComponent = () => {
     const [searchParams] = useSearchParams()
     const [search, setSearch] = useState(
         {
-            channelId: searchParams.get("channelId"),
+            channelId: "",
             content: "",
             page: 1,
             size: 20,
@@ -32,7 +32,7 @@ const ListMessageComponent = () => {
             setData(o => ({...o, loading: true}))
             const fetchAPI = async () => {
                 const response = await UseFetch(Api.channelsChannelIdMessagesGET,
-                    `${search.channelId}/messages?content=${search.content}&page=${search.page}&size=${search.size}`
+                    `${searchParams.get("channelId")}/messages?content=${search.content}&page=${search.page}&size=${search.size}`
                 )
                 const res = await response.json();
                 if (res.success) {
@@ -63,11 +63,13 @@ const ListMessageComponent = () => {
             }
             fetchAPI()
         }
-    }, [search]);
+    }, [search, searchParams]);
 
     const onScroll = (e) => {
         if (Math.floor(e.currentTarget.scrollHeight + e.currentTarget.scrollTop) === ContainerHeight) {
-            e.currentTarget.scrollTop = e.currentTarget.scrollTop + 200
+            if (data.result.length < data.totalItem) {
+                e.currentTarget.scrollTop = e.currentTarget.scrollTop + 200
+            }
             if (!data.loading) {
                 setSearch(o => ({...o, page: search.page + 1, loadMore: true}))
             }
@@ -80,7 +82,7 @@ const ListMessageComponent = () => {
             style={{
                 height: ContainerHeight,
                 overflow: 'auto',
-                padding: "200px 16px 0",
+                padding: "0px 16px 0",
                 display: "flex",
                 flexDirection: "column-reverse",
                 visibility: data.result.length > 0 ? "visible" : "hidden"

@@ -7,7 +7,7 @@ const {Text} = Typography;
 
 const ContainerHeight = window.innerHeight - 198;
 
-const ListCurrentChannelComponent = ({onChangePage, search, data}) => {
+const ListCurrentChannelComponent = ({onChangePage, search, data, collapsed}) => {
     const [, setSearchParams] = useSearchParams()
     const onScroll = (e) => {
         if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === ContainerHeight) {
@@ -24,7 +24,7 @@ const ListCurrentChannelComponent = ({onChangePage, search, data}) => {
                 height: ContainerHeight,
                 overflow: 'auto',
                 padding: "0 16px 0",
-                visibility: data.result.length > 0 ? "visible" : "hidden"
+                visibility: !collapsed ? (data.result.length > 0 ? "visible" : "hidden") : "hidden"
             }}
             onScroll={onScroll}
         >

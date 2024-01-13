@@ -79,11 +79,11 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
                 responseCollapsed(collapsed)
             }}
             collapsed={collapsed}
-            width={350}
+            width={300}
             theme={"light"}
         >
             <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} collapsed={collapsed}/>
-            <ListCurrentChannelComponent onChangePage={onChangePage} search={search} data={data}/>
+            <ListCurrentChannelComponent onChangePage={onChangePage} search={search} data={data} collapsed={collapsed}/>
         </Sider>
     )
 }
