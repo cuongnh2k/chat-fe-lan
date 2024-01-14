@@ -10,15 +10,8 @@ const ContainerHeight = window.innerHeight - 228;
 
 const ListMessageComponent = () => {
     const [data, setData] = useState({loading: false, result: [], totalItem: 0})
-    const [searchParams] = useSearchParams()
-    const [search, setSearch] = useState(
-        {
-            channelId: "",
-            content: "",
-            page: 1,
-            size: 1000,
-            loadMore: false
-        })
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [search, setSearch] = useState({content: "", size: 1000,})
 
     const token = localStorage.getItem("token")
     let sub = ""
@@ -34,12 +27,12 @@ const ListMessageComponent = () => {
             setData(o => ({...o, loading: true}))
             const fetchAPI = async () => {
                 const response = await UseFetch(Api.channelsChannelIdMessagesGET,
-                    `${searchParams.get("channelId")}/messages?content=${search.content}&page=${search.page}&size=${search.size}`
+                    `${searchParams.get("channelId")}/messages?content=${search.content}&page=${searchParams.get("page")}&size=${search.size}`
                 )
                 const res = await response.json();
                 if (res.success) {
                     let list
-                    if (!search.loadMore) {
+                    if (searchParams.get("loadMore") === "false") {
                         list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
                     } else {
                         list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
@@ -69,14 +62,20 @@ const ListMessageComponent = () => {
     }, [search, searchParams]);
 
     const onScroll = (e) => {
-        // if (Math.floor(e.currentTarget.scrollHeight + e.currentTarget.scrollTop) === ContainerHeight) {
-        //     if (data.result.length < data.totalItem) {
-        //         e.currentTarget.scrollTop = e.currentTarget.scrollTop + 200
-        //     }
-        //     if (!data.loading) {
-        //         setSearch(o => ({...o, page: search.page + 1, loadMore: true}))
-        //     }
-        // }
+        if (Math.floor(e.currentTarget.scrollHeight + e.currentTarget.scrollTop) === ContainerHeight) {
+            if (data.result.length < data.totalItem) {
+                e.currentTarget.scrollTop = e.currentTarget.scrollTop + 200
+            }
+            if (!data.loading) {
+                setSearchParams(o => (
+                    {
+                        channelId: searchParams.get("channelId"),
+                        page: Number(searchParams.get("page")) + 1,
+                        loadMore: true
+                    }
+                ))
+            }
+        }
     };
 
     return (

@@ -13,7 +13,7 @@ const ListCurrentChannelComponent = ({onChangePage, search, data, collapsed}) =>
         if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === ContainerHeight) {
             if (!data.loading) {
                 onChangePage(search.page + 1)
-                }
+            }
         }
     };
 
@@ -44,7 +44,7 @@ const ListCurrentChannelComponent = ({onChangePage, search, data, collapsed}) =>
                                 cursor: "pointer"
                             }}
                             key={item.id}
-                            onClick={() => setSearchParams({channelId: item.id})}
+                            onClick={() => setSearchParams({channelId: item.id, page: 1, loadMore: false})}
                         >
                             <List.Item.Meta
                                 avatar={
