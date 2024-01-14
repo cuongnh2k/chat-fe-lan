@@ -116,7 +116,6 @@ const SendMessageComponent = () => {
                         style={{
                             fontSize: 24,
                             marginLeft: 12,
-                            marginTop: -5,
                         }}
                         disabled={true}
                         onClick={() => send()}
