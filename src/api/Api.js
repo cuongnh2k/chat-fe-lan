@@ -55,7 +55,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsAddUserFriendPOST: {
-        path: "/user/channels/{channelId}/add-user-friend",
+        path: "/user/channels/add-user-friend",
         method: "POST",
         contentType: "application/json",
     },

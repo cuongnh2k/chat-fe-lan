@@ -1,25 +1,83 @@
-import {UserAddOutlined} from "@ant-design/icons";
+import {SearchOutlined, UserAddOutlined} from "@ant-design/icons";
 import React, {useState} from "react";
-import {Modal} from 'antd';
+import {Avatar, Button, Flex, Input, List, message, Modal, Typography} from 'antd';
+import UseFetch from "../../../../hooks/UseFetch";
+import Api from "../../../../api/Api";
+import {useNavigate} from "react-router-dom";
 
+const {Text} = Typography;
 const AddFriendComponent = () => {
     const [open, setOpen] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Content of the modal');
+    const [input, setInput] = useState("")
+    const [data, setData] = useState({loading: false, result: null})
+    const [messageApi, contextHolder] = message.useMessage()
+    const navigate = useNavigate();
+    const callApi = () => {
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.usersToAddFriendGET, `?email=${input}`)
+            const res = await response.json();
+            if (res.success) {
+                setData(o => ({...o, loading: false, result: res.data}))
+            } else {
+                if (res.errorCode === 401) {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                } else {
+                    setData(o => ({...o, loading: false, result: null}))
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Không tìm thấy thông tin',
+                        duration: 1,
+                    });
+                }
+            }
+        }
+        fetchAPI()
+    }
+
+    const addFriend = () => {
+        const fetchAPI = async () => {
+            setData(o => ({...o, loading: true}))
+            const response = await UseFetch(Api.channelsAddUserFriendPOST,
+                "",
+                JSON.stringify({userId: data.result.id})
+            )
+            const res = await response.json();
+            if (res.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Gửi lời mời kết bạn thành công',
+                    duration: 3,
+                });
+            } else {
+                if (res.errorCode === 401) {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                } else {
+                    setData(o => ({...o, loading: false}))
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Gửi lời mời kết bạn thất bại',
+                        duration: 1,
+                    });
+                }
+            }
+        }
+        fetchAPI()
+    }
+
     const showModal = () => {
         setOpen(true);
     };
     const handleOk = () => {
-        setModalText('The modal will be closed after two seconds');
-        setConfirmLoading(true);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 2000);
+        setOpen(false);
     };
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setOpen(false);
+    };
+
+    const onChange = (e) => {
+        setInput(e.target.value)
     };
     return (
         <>
@@ -32,13 +90,96 @@ const AddFriendComponent = () => {
                 onClick={showModal}
             />
             <Modal
-                title="Thêm bạn"
                 open={open}
                 onOk={handleOk}
-                confirmLoading={confirmLoading}
                 onCancel={handleCancel}
+                footer={[]}
             >
-                <p>{modalText}</p>
+                {contextHolder}
+                <Flex
+                    vertical={true}
+                    style={{
+                        margin: "30px 30px 30px 30px",
+                    }}
+                >
+                    <Input
+                        placeholder="Tìm kiếm"
+                        prefix={
+                            <SearchOutlined
+                                onClick={() => callApi()}
+                            />
+                        }
+                        onChange={onChange}
+                    />
+                    <Flex
+                        align={"center"}
+                    >
+                        {data.result !== null
+                            ? <><List
+                                style={{
+                                    width: "100%",
+                                    marginTop: 20
+                                }}
+                                itemLayout="horizontal"
+                                dataSource={[
+                                    {
+                                        name: data.result.name,
+                                        avatarUrl: data.result.avatarUrl,
+                                        email: data.result.email,
+                                    },
+                                ]}
+                                onClick={showModal}
+                                renderItem={(item, index) => (
+                                    <List.Item>
+                                        <List.Item.Meta
+                                            avatar={
+                                                <Avatar
+                                                    style={{
+                                                        width: 48,
+                                                        height: 48,
+                                                    }}
+                                                    src={item.avatarUrl}
+                                                />
+                                            }
+                                            title={
+                                                <Text
+                                                    style={{
+                                                        width: 200,
+                                                    }}
+                                                    ellipsis={{
+                                                        tooltip: item.name
+                                                    }}
+                                                >
+                                                    {item.name}
+                                                </Text>
+                                            }
+                                            description={<Text
+                                                style={{
+                                                    width: 200,
+                                                }}
+                                                ellipsis={{
+                                                    tooltip: item.email
+                                                }}
+                                            >
+                                                {item.email}
+                                            </Text>}
+                                        />
+                                    </List.Item>
+                                )}
+                            />
+                                <Button
+                                    onClick={() => addFriend()}
+                                    style={{
+                                        marginTop: 20,
+                                    }}
+                                    disabled={!data.loading ? data.result.status === "ACCEPT" : true}
+                                >
+                                    {data.result.status === "ACCEPT" ? "Bạn bè" : "Kết bạn"}
+                                </Button>
+                            </>
+                            : ""}
+                    </Flex>
+                </Flex>
             </Modal>
         </>
     )
