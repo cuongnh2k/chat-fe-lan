@@ -25,10 +25,9 @@ const AddFriendComponent = () => {
         <>
             <UserAddOutlined
                 style={{
-                    fontSize: 16,
+                    fontSize: 18,
                     paddingLeft: 16,
                     paddingRight: 8,
-                    cursor: "pointer"
                 }}
                 onClick={showModal}
             />

@@ -25,9 +25,8 @@ const AddGroupComponent = () => {
         <>
             <UsergroupAddOutlined
                 style={{
-                    fontSize: 16,
+                    fontSize: 18,
                     paddingLeft: 8,
-                    cursor: "pointer"
                 }}
                 onClick={showModal}
             />

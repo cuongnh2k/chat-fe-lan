@@ -1,9 +1,13 @@
-import {Affix, Avatar, Divider, List} from "antd";
+import {Affix, Avatar, Flex, List, Typography} from "antd";
 import React, {useEffect, useState} from "react";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {useSearchParams} from "react-router-dom";
 import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
+import SearchComponent from "./SearchComponent";
+import AddMemberComponent from "./AddMemberComponent";
+
+const {Text} = Typography;
 
 const AffixContentComponent = ({clickCollapsed, collapsed}) => {
     const [data, setData] = useState({loading: false, result: null})
@@ -34,7 +38,11 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
             }}
             offsetTop={0}
         >
-            <div>
+            <div
+                style={{
+                    visibility: data.result !== null ? "visible" : "hidden"
+                }}
+            >
                 {collapsed
                     ? <MenuUnfoldOutlined
                         style={{
@@ -49,43 +57,64 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         onClick={() => clickCollapsed()}
                     />
                 }
-                <List
+                <Flex
                     style={{
                         paddingLeft: 16,
-                        paddingRight: 16,
+                        paddingRight: 16
                     }}
-                    itemLayout="horizontal"
-                    dataSource={[
-                        {
-                            name: data.result && data.result.name,
-                            avatarUrl: data.result && data.result.avatarUrl
-                        },
-                    ]}
-                    renderItem={(item, index) => (
-                        <List.Item>
-                            <List.Item.Meta
-                                avatar={data.result
-                                    ? <Avatar
-                                        style={{
-                                            width: 48,
-                                            height: 48,
-                                        }}
-                                        src={item.avatarUrl}
-                                    />
-                                    : null
-                                }
-                                title={item.name}
-                                description={data.result && `Đang hoạt động`}
-                            />
-                        </List.Item>
-                    )}
-                />
-                <Divider
-                    style={{
-                        margin: 0,
-                        display: "none"
-                    }}
-                />
+                >
+                    <List
+                        style={{
+                            width: "100%"
+                        }}
+                        itemLayout="horizontal"
+                        dataSource={[
+                            {
+                                name: data.result && data.result.name,
+                                avatarUrl: data.result && data.result.avatarUrl
+                            },
+                        ]}
+                        renderItem={(item, index) => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={data.result
+                                        ? <Avatar
+                                            style={{
+                                                width: 48,
+                                                height: 48,
+                                            }}
+                                            src={item.avatarUrl}
+                                        />
+                                        : null
+                                    }
+                                    title={
+                                        <Text
+                                            style={{
+                                                width: 200,
+                                            }}
+                                            ellipsis={{
+                                                tooltip: item.name
+                                            }}
+                                        >
+                                            {item.name}
+                                        </Text>
+                                    }
+                                    description={
+                                        <Text
+                                            style={{
+                                                width: 200,
+                                            }}
+                                        >
+                                            {`Đang hoạt động`}
+                                        </Text>
+                                    }
+                                />
+                            </List.Item>
+                        )}
+                    />
+                    <SearchComponent/>
+                    <AddMemberComponent/>
+                </Flex>
             </div>
         </Affix>
     )

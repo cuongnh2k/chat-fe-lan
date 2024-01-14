@@ -16,7 +16,9 @@ const SearchSiderComponent = ({onChangeSearch}) => {
             }}
         >
             <Input
-                size={"large"}
+                style={{
+                    fontSize: 18
+                }}
                 placeholder="Tìm kiếm"
                 prefix={
                     <SearchOutlined onClick={o => onChangeSearch(input)}/>
