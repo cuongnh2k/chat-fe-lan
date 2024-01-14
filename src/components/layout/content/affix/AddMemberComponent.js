@@ -6,7 +6,8 @@ const AddMemberComponent = () => {
         <UsergroupAddOutlined
             style={{
                 fontSize: 18,
-                paddingLeft: 8
+                paddingLeft: 8,
+                paddingRight: 8
             }}
         />
     )

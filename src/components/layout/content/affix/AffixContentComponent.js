@@ -6,6 +6,7 @@ import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import SearchComponent from "./SearchComponent";
 import AddMemberComponent from "./AddMemberComponent";
+import InfoComponent from "./InfoComponent";
 
 const {Text} = Typography;
 
@@ -114,6 +115,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                     />
                     <SearchComponent/>
                     <AddMemberComponent/>
+                    <InfoComponent/>
                 </Flex>
             </div>
         </Affix>
