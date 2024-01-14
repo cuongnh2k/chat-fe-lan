@@ -10,11 +10,11 @@ const ContainerHeight = window.innerHeight - 198;
 const ListCurrentChannelComponent = ({onChangePage, search, data, collapsed}) => {
     const [, setSearchParams] = useSearchParams()
     const onScroll = (e) => {
-        // if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === ContainerHeight) {
-        //     if (!data.loading) {
-        //         onChangePage(search.page + 1)
-        //     }
-        // }
+        if (Math.floor(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === ContainerHeight) {
+            if (!data.loading) {
+                onChangePage(search.page + 1)
+                }
+        }
     };
 
     return (

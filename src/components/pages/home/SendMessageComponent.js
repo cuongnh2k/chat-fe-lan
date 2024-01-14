@@ -8,29 +8,75 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 const {TextArea} = Input;
 const SendMessageComponent = () => {
     const [data, setData] = useState({loading: false})
-    const [message, setMessage] = useState({content: ""})
+    const [message, setMessage] = useState({content: "", files: null})
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
     const send = () => {
-        if (message.content !== "") {
-            setData(o => ({...o, loading: true}))
-            const fetchAPI = async () => {
-                const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
-                    `${searchParams.get("channelId")}/messages`,
-                    JSON.stringify({content: message.content})
-                )
-                const res = await response.json();
-                if (res.success) {
-                    setData(o => ({...o, loading: false,}))
-                    setMessage(o => ({...o, content: ""}))
+        // if (message.content !== "") {
+        setData(o => ({...o, loading: true}))
+        const fetchAPI = async () => {
+            const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
+                `${searchParams.get("channelId")}/messages`,
+                JSON.stringify({content: message.content, files: message.files})
+            )
+            const res = await response.json();
+            if (res.success) {
+                setData(o => ({...o, loading: false,}))
+                setMessage(o => ({...o, content: "", files: []}))
+            } else {
+                localStorage.removeItem("token")
+                navigate("/account")
+            }
+        }
+        fetchAPI()
+        // }
+    }
+
+    const props = {
+        name: 'file',
+        action: `${process.env.REACT_APP_HOST}${Api.filesPOST.path}`,
+        headers: {
+            "Authorization": localStorage.getItem("token")
+        },
+        onChange(info) {
+            if (info.fileList.length === 0) {
+                const fetchAPI = async () => {
+                    await UseFetch(Api.filesFileIdDELETE,
+                        `${info.file.response.data.id}`
+                    )
+                }
+                fetchAPI()
+            } else if (info.fileList.length > 1) {
+                const fetchAPI = async () => {
+                    await UseFetch(Api.filesFileIdDELETE,
+                        `${info.fileList[0].response.data.id}`
+                    )
+                }
+                fetchAPI()
+                info.fileList.shift()
+            }
+            if (info.file.status === 'done') {
+                if (info.file.response.success) {
+                    setMessage(o => (
+                        {
+                            ...o,
+                            files: [
+                                {
+                                    contentType: info.file.response.data.contentType,
+                                    name: info.file.response.data.name,
+                                    size: info.file.response.data.size,
+                                    url: info.file.response.data.url
+                                }
+                            ]
+                        }
+                    ))
                 } else {
                     localStorage.removeItem("token")
                     navigate("/account")
                 }
             }
-            fetchAPI()
-        }
-    }
+        },
+    };
 
     return (
         <Affix
@@ -43,13 +89,14 @@ const SendMessageComponent = () => {
                 }}
             >
                 <Flex
+                    align={"flex-start"}
                     style={{
                         paddingTop: 5,
                         paddingLeft: 16,
                         paddingRight: 16
                     }}
                 >
-                    <Upload>
+                    <Upload {...props}>
                         <UploadOutlined
                             style={{
                                 cursor: "pointer",
@@ -61,7 +108,6 @@ const SendMessageComponent = () => {
                         style={{
                             fontSize: 24,
                             marginLeft: 16,
-                            marginTop: -5,
                             cursor: "pointer"
                         }}
                     />

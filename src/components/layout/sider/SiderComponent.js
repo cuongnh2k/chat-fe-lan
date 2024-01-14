@@ -21,7 +21,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setInterval(() => {
+        // setInterval(() => {
             if (!data.loading) {
                 setData(o => ({...o, loading: true}))
                 const fetchAPI = async () => {
@@ -74,7 +74,7 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
                 }
                 fetchAPI()
             }
-        }, 1000);
+        // }, 1000);
     }, [search])
 
     const onChangeSearch = (value) => {
