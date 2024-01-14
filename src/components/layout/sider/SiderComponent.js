@@ -15,23 +15,38 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
         search: "",
         status: "ACCEPT",
         page: 1,
-        size: 20,
+        size: 1000,
         loadMore: false
     })
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!data.loading) {
-            setData(o => ({...o, loading: true}))
-            const fetchAPI = async () => {
-                const response = await UseFetch(Api.channelsGET,
-                    `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
-                )
-                const res = await response.json();
-                if (res.success) {
-                    let list
-                    if (!search.loadMore) {
-                        list = res.data.content.sort((a, b) => {
+        setInterval(() => {
+            if (!data.loading) {
+                setData(o => ({...o, loading: true}))
+                const fetchAPI = async () => {
+                    const response = await UseFetch(Api.channelsGET,
+                        `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
+                    )
+                    const res = await response.json();
+                    if (res.success) {
+                        let list
+                        if (!search.loadMore) {
+                            list = res.data.content.sort((a, b) => {
+                                    if (a.currentMessage && b.currentMessage) {
+                                        return b.currentMessage.createdAt - a.currentMessage.createdAt
+                                    }
+                                    if (a.currentMessage) {
+                                        return b.createdAt - a.currentMessage.createdAt
+                                    }
+                                    if (b.currentMessage) {
+                                        return b.currentMessage.createdAt - a.createdAt
+                                    }
+                                    return b.createdAt - a.createdAt
+                                }
+                            )
+                        } else {
+                            list = data.result.concat(res.data.content).sort((a, b) => {
                                 if (a.currentMessage && b.currentMessage) {
                                     return b.currentMessage.createdAt - a.currentMessage.createdAt
                                 }
@@ -42,37 +57,24 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
                                     return b.currentMessage.createdAt - a.createdAt
                                 }
                                 return b.createdAt - a.createdAt
-                            }
-                        )
-                    } else {
-                        list = data.result.concat(res.data.content).sort((a, b) => {
-                            if (a.currentMessage && b.currentMessage) {
-                                return b.currentMessage.createdAt - a.currentMessage.createdAt
-                            }
-                            if (a.currentMessage) {
-                                return b.createdAt - a.currentMessage.createdAt
-                            }
-                            if (b.currentMessage) {
-                                return b.currentMessage.createdAt - a.createdAt
-                            }
-                            return b.createdAt - a.createdAt
-                        })
-                        list = [...new Map(list.map(item => [item["id"], item])).values()];
-                    }
-                    setData(o => (
-                        {
-                            ...o,
-                            loading: false,
-                            result: list
+                            })
+                            list = [...new Map(list.map(item => [item["id"], item])).values()];
                         }
-                    ))
-                } else {
-                    localStorage.removeItem("token")
-                    navigate("/account")
+                        setData(o => (
+                            {
+                                ...o,
+                                loading: false,
+                                result: list
+                            }
+                        ))
+                    } else {
+                        localStorage.removeItem("token")
+                        navigate("/account")
+                    }
                 }
+                fetchAPI()
             }
-            fetchAPI()
-        }
+        }, 1000);
     }, [search])
 
     const onChangeSearch = (value) => {

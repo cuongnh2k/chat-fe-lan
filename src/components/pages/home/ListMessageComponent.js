@@ -16,7 +16,7 @@ const ListMessageComponent = () => {
             channelId: "",
             content: "",
             page: 1,
-            size: 20,
+            size: 1000,
             loadMore: false
         })
 
@@ -28,52 +28,55 @@ const ListMessageComponent = () => {
     }
 
     useEffect(() => {
-        if (!data.loading) {
-            setData(o => ({...o, loading: true}))
-            const fetchAPI = async () => {
-                const response = await UseFetch(Api.channelsChannelIdMessagesGET,
-                    `${searchParams.get("channelId")}/messages?content=${search.content}&page=${search.page}&size=${search.size}`
-                )
-                const res = await response.json();
-                if (res.success) {
-                    let list
-                    if (!search.loadMore) {
-                        list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
+        setInterval(() => {
+            // this code runs every second
+            if (!data.loading) {
+                setData(o => ({...o, loading: true}))
+                const fetchAPI = async () => {
+                    const response = await UseFetch(Api.channelsChannelIdMessagesGET,
+                        `${searchParams.get("channelId")}/messages?content=${search.content}&page=${search.page}&size=${search.size}`
+                    )
+                    const res = await response.json();
+                    if (res.success) {
+                        let list
+                        if (!search.loadMore) {
+                            list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
+                        } else {
+                            list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
+                        }
+                        list = [...new Map(list.map(item => [item["id"], item])).values()];
+                        setData(o => (
+                            {
+                                ...o,
+                                loading: false,
+                                result: list,
+                                totalItem: res.data.totalElements
+                            }
+                        ))
                     } else {
-                        list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
+                        setData(o => (
+                            {
+                                ...o,
+                                loading: false,
+                                result: []
+                            }
+                        ))
                     }
-                    list = [...new Map(list.map(item => [item["id"], item])).values()];
-                    setData(o => (
-                        {
-                            ...o,
-                            loading: false,
-                            result: list,
-                            totalItem: res.data.totalElements
-                        }
-                    ))
-                } else {
-                    setData(o => (
-                        {
-                            ...o,
-                            loading: false,
-                            result: []
-                        }
-                    ))
                 }
+                fetchAPI()
             }
-            fetchAPI()
-        }
+        }, 1000);
     }, [search, searchParams]);
 
     const onScroll = (e) => {
-        if (Math.floor(e.currentTarget.scrollHeight + e.currentTarget.scrollTop) === ContainerHeight) {
-            if (data.result.length < data.totalItem) {
-                e.currentTarget.scrollTop = e.currentTarget.scrollTop + 200
-            }
-            if (!data.loading) {
-                setSearch(o => ({...o, page: search.page + 1, loadMore: true}))
-            }
-        }
+        // if (Math.floor(e.currentTarget.scrollHeight + e.currentTarget.scrollTop) === ContainerHeight) {
+        //     if (data.result.length < data.totalItem) {
+        //         e.currentTarget.scrollTop = e.currentTarget.scrollTop + 200
+        //     }
+        //     if (!data.loading) {
+        //         setSearch(o => ({...o, page: search.page + 1, loadMore: true}))
+        //     }
+        // }
     };
 
     return (

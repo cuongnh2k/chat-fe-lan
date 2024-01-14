@@ -22,6 +22,7 @@ const SendMessageComponent = () => {
                 const res = await response.json();
                 if (res.success) {
                     setData(o => ({...o, loading: false,}))
+                    setMessage(o => ({...o, content: ""}))
                 } else {
                     localStorage.removeItem("token")
                     navigate("/account")
@@ -90,7 +91,9 @@ const SendMessageComponent = () => {
                     rows={3}
                     placeholder="Nhập tin nhắn"
                     onChange={(e) => setMessage(o => ({...o, content: e.target.value}))}
-                />
+                >
+                    message.content
+                </TextArea>
             </Flex>
         </Affix>
     )
