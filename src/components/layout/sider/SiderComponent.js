@@ -31,12 +31,34 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
                 if (res.success) {
                     let list
                     if (!search.loadMore) {
-                        list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
+                        list = res.data.content.sort((a, b) => {
+                                if (a.currentMessage && b.currentMessage) {
+                                    return b.currentMessage.createdAt - a.currentMessage.createdAt
+                                }
+                                if (a.currentMessage) {
+                                    return b.createdAt - a.currentMessage.createdAt
+                                }
+                                if (b.currentMessage) {
+                                    return b.currentMessage.createdAt - a.createdAt
+                                }
+                                return b.createdAt - a.createdAt
+                            }
+                        )
                     } else {
-                        list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
+                        list = data.result.concat(res.data.content).sort((a, b) => {
+                            if (a.currentMessage && b.currentMessage) {
+                                return b.currentMessage.createdAt - a.currentMessage.createdAt
+                            }
+                            if (a.currentMessage) {
+                                return b.createdAt - a.currentMessage.createdAt
+                            }
+                            if (b.currentMessage) {
+                                return b.currentMessage.createdAt - a.createdAt
+                            }
+                            return b.createdAt - a.createdAt
+                        })
+                        list = [...new Map(list.map(item => [item["id"], item])).values()];
                     }
-                    list = [...new Map(list.map(item => [item["id"], item])).values()];
-                    list.sort((a, b) => b.createdAt - a.createdAt)
                     setData(o => (
                         {
                             ...o,
