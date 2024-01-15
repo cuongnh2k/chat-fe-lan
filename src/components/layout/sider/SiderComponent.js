@@ -8,7 +8,7 @@ import Api from "../../../api/Api";
 
 const {Sider} = Layout;
 
-const SiderComponent = ({responseCollapsed, collapsed}) => {
+const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
     const [data, setData] = useState({loading: false, result: []})
     const [search, setSearch] = useState({
         type: "",
@@ -21,32 +21,56 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // setInterval(() => {
-            if (!data.loading) {
-                setData(o => ({...o, loading: true}))
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.channelsGET,
-                        `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
-                    )
-                    const res = await response.json();
-                    if (res.success) {
-                        let list
-                        if (!search.loadMore) {
-                            list = res.data.content.sort((a, b) => {
-                                    if (a.currentMessage && b.currentMessage) {
-                                        return b.currentMessage.createdAt - a.currentMessage.createdAt
-                                    }
-                                    if (a.currentMessage) {
-                                        return b.createdAt - a.currentMessage.createdAt
-                                    }
-                                    if (b.currentMessage) {
-                                        return b.currentMessage.createdAt - a.createdAt
-                                    }
-                                    return b.createdAt - a.createdAt
-                                }
-                            )
-                        } else {
-                            list = data.result.concat(res.data.content).sort((a, b) => {
+        if (notify !== null) {
+            let list = data.result;
+            list.push(JSON.parse(notify));
+            list = list.sort((a, b) => {
+                if (a.currentMessage && b.currentMessage) {
+                    return a.currentMessage.createdAt - b.currentMessage.createdAt
+                }
+                if (b.currentMessage) {
+                    return a.createdAt - b.currentMessage.createdAt
+                }
+                if (a.currentMessage) {
+                    return a.currentMessage.createdAt - b.createdAt
+                }
+                return a.createdAt - b.createdAt
+            })
+            list = [...new Map(list.map(item => [item["id"], item])).values()];
+            list = list.sort((a, b) => {
+                if (a.currentMessage && b.currentMessage) {
+                    return b.currentMessage.createdAt - a.currentMessage.createdAt
+                }
+                if (a.currentMessage) {
+                    return b.createdAt - a.currentMessage.createdAt
+                }
+                if (b.currentMessage) {
+                    return b.currentMessage.createdAt - a.createdAt
+                }
+                return a.createdAt - b.createdAt
+            })
+            console.log(list)
+            setData(o => (
+                {
+                    ...o,
+                    result: list
+                }
+            ))
+        }
+    }, [notify])
+
+    useEffect(() => {
+        if (!data.loading) {
+            setData(o => ({...o, loading: true}))
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsGET,
+                    `?type=${search.type}&search=${search.search}&status=${search.status}&page=${search.page}&size=${search.size}`
+                )
+                const res = await response.json();
+                if (res.success) {
+                    let list
+                    if (!search.loadMore) {
+                        list = res.data.content.sort((a, b) => {
                                 if (a.currentMessage && b.currentMessage) {
                                     return b.currentMessage.createdAt - a.currentMessage.createdAt
                                 }
@@ -57,24 +81,37 @@ const SiderComponent = ({responseCollapsed, collapsed}) => {
                                     return b.currentMessage.createdAt - a.createdAt
                                 }
                                 return b.createdAt - a.createdAt
-                            })
-                            list = [...new Map(list.map(item => [item["id"], item])).values()];
-                        }
-                        setData(o => (
-                            {
-                                ...o,
-                                loading: false,
-                                result: list
                             }
-                        ))
+                        )
                     } else {
-                        localStorage.removeItem("token")
-                        navigate("/account")
+                        list = data.result.concat(res.data.content).sort((a, b) => {
+                            if (a.currentMessage && b.currentMessage) {
+                                return b.currentMessage.createdAt - a.currentMessage.createdAt
+                            }
+                            if (a.currentMessage) {
+                                return b.createdAt - a.currentMessage.createdAt
+                            }
+                            if (b.currentMessage) {
+                                return b.currentMessage.createdAt - a.createdAt
+                            }
+                            return b.createdAt - a.createdAt
+                        })
+                        list = [...new Map(list.map(item => [item["id"], item])).values()];
                     }
+                    setData(o => (
+                        {
+                            ...o,
+                            loading: false,
+                            result: list
+                        }
+                    ))
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
                 }
-                fetchAPI()
             }
-        // }, 1000);
+            fetchAPI()
+        }
     }, [search])
 
     const onChangeSearch = (value) => {

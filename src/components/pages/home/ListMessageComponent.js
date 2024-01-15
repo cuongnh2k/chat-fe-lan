@@ -4,14 +4,18 @@ import {useSearchParams} from "react-router-dom";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
 
 const {Text} = Typography;
 const ContainerHeight = window.innerHeight - 228;
 
 const ListMessageComponent = () => {
+    let stompClient = null;
     const [data, setData] = useState({loading: false, result: [], totalItem: 0})
     const [searchParams, setSearchParams] = useSearchParams()
     const [search, setSearch] = useState({content: "", size: 1000,})
+    const [notify, setNotify] = useState(null)
 
     const token = localStorage.getItem("token")
     let sub = ""
@@ -20,44 +24,77 @@ const ListMessageComponent = () => {
     } catch (o) {
     }
 
+    const connect = () => {
+        let Sock = new SockJS(`${process.env.REACT_APP_HOST}/wsjs?token=${token}`);
+        stompClient = over(Sock);
+        stompClient.connect({},
+            () => {
+                stompClient.subscribe('/user/' + sub + '/private', (payload) => {
+                    let res = payload.body;
+                    setNotify(res)
+                });
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
+    connect()
+
+    useEffect(() => {
+        if (notify !== null) {
+            let list = data.result;
+            list.push(JSON.parse(notify).currentMessage);
+            list.sort((a, b) => a.createdAt - b.createdAt)
+            list = [...new Map(list.map(item => [item["id"], item])).values()];
+            console.log(list)
+            setData(o => (
+                {
+                    ...o,
+                    result: list
+                }
+            ))
+        }
+    }, [notify])
+
     useEffect(() => {
         // setInterval(() => {
-            // this code runs every second
-            if (!data.loading) {
-                setData(o => ({...o, loading: true}))
-                const fetchAPI = async () => {
-                    const response = await UseFetch(Api.channelsChannelIdMessagesGET,
-                        `${searchParams.get("channelId")}/messages?content=${search.content}&page=${searchParams.get("page")}&size=${search.size}`
-                    )
-                    const res = await response.json();
-                    if (res.success) {
-                        let list
-                        if (searchParams.get("loadMore") === "false") {
-                            list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
-                        } else {
-                            list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
-                        }
-                        list = [...new Map(list.map(item => [item["id"], item])).values()];
-                        setData(o => (
-                            {
-                                ...o,
-                                loading: false,
-                                result: list,
-                                totalItem: res.data.totalElements
-                            }
-                        ))
+        // this code runs every second
+        if (!data.loading) {
+            setData(o => ({...o, loading: true}))
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsChannelIdMessagesGET,
+                    `${searchParams.get("channelId")}/messages?content=${search.content}&page=${searchParams.get("page")}&size=${search.size}`
+                )
+                const res = await response.json();
+                if (res.success) {
+                    let list
+                    if (searchParams.get("loadMore") === "false") {
+                        list = res.data.content.sort((a, b) => a.createdAt - b.createdAt)
                     } else {
-                        setData(o => (
-                            {
-                                ...o,
-                                loading: false,
-                                result: []
-                            }
-                        ))
+                        list = data.result.concat(res.data.content).sort((a, b) => a.createdAt - b.createdAt)
                     }
+                    list = [...new Map(list.map(item => [item["id"], item])).values()];
+                    setData(o => (
+                        {
+                            ...o,
+                            loading: false,
+                            result: list,
+                            totalItem: res.data.totalElements
+                        }
+                    ))
+                } else {
+                    setData(o => (
+                        {
+                            ...o,
+                            loading: false,
+                            result: []
+                        }
+                    ))
                 }
-                fetchAPI()
             }
+            fetchAPI()
+        }
         // }, 1000);
     }, [search, searchParams]);
 
