@@ -96,7 +96,9 @@ const SendMessageComponent = () => {
                         paddingRight: 16
                     }}
                 >
-                    <Upload {...props}>
+                    <Upload
+                        {...props}
+                    >
                         <UploadOutlined
                             style={{
                                 cursor: "pointer",

@@ -1,4 +1,4 @@
-import {Affix, Flex} from "antd";
+import {Affix, Flex, message} from "antd";
 import React from "react";
 import AddFriendComponent from "./AddFriendComponent";
 import AddGroupComponent from "./AddGroupComponent";
@@ -8,8 +8,8 @@ import UserSiderComponent from "./user/UserSiderComponent";
 import EllipsisComponent from "./EllipsisComponent";
 
 
-const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
-
+const AffixContentComponent = ({onChangeType, onChangeSearch,onRefresh, collapsed}) => {
+    const [messageApi, contextHolder] = message.useMessage()
     return (
         <Affix
             style={{
@@ -18,6 +18,7 @@ const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
             offsetTop={0}
         >
             <div>
+                {contextHolder}
                 <EllipsisComponent/>
                 <Flex
                     style={{
@@ -26,8 +27,8 @@ const AffixContentComponent = ({onChangeType, onChangeSearch, collapsed}) => {
                     }}
                 >
                     <UserSiderComponent/>
-                    <AddFriendComponent/>
-                    <AddGroupComponent/>
+                    <AddFriendComponent messageApi={messageApi} onRefresh={onRefresh}/>
+                    <AddGroupComponent messageApi={messageApi} onRefresh={onRefresh}/>
                 </Flex>
                 <SearchSiderComponent onChangeSearch={onChangeSearch}/>
                 <TabSiderComponent onChangeType={onChangeType}/>

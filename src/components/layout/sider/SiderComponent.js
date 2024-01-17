@@ -16,9 +16,14 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
         status: "ACCEPT",
         page: 1,
         size: 1000,
-        loadMore: false
+        loadMore: false,
+        refresh: Math.random()
     })
     const navigate = useNavigate();
+
+    const onRefresh = () => {
+        setSearch(o => ({...o, refresh: Math.random()}))
+    }
 
     useEffect(() => {
         if (notify !== null) {
@@ -143,7 +148,7 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
             width={300}
             theme={"light"}
         >
-            <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} collapsed={collapsed}/>
+            <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} onRefresh={onRefresh} collapsed={collapsed}/>
             <ListCurrentChannelComponent onChangePage={onChangePage} search={search} data={data} collapsed={collapsed}/>
         </Sider>
     )

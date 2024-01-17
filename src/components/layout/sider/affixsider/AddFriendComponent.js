@@ -1,16 +1,15 @@
 import {SearchOutlined, UserAddOutlined} from "@ant-design/icons";
 import React, {useState} from "react";
-import {Avatar, Button, Flex, Input, List, message, Modal, Typography} from 'antd';
+import {Avatar, Button, Flex, Input, List, Modal, Typography} from 'antd';
 import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import {useNavigate} from "react-router-dom";
 
 const {Text} = Typography;
-const AddFriendComponent = () => {
+const AddFriendComponent = ({messageApi, onRefresh}) => {
     const [open, setOpen] = useState(false);
     const [input, setInput] = useState("")
     const [data, setData] = useState({loading: false, result: null})
-    const [messageApi, contextHolder] = message.useMessage()
     const navigate = useNavigate();
     const callApi = () => {
         const fetchAPI = async () => {
@@ -49,6 +48,7 @@ const AddFriendComponent = () => {
                     content: 'Gửi lời mời kết bạn thành công',
                     duration: 3,
                 });
+                onRefresh()
             } else {
                 if (res.errorCode === 401) {
                     localStorage.removeItem("token")
@@ -95,7 +95,6 @@ const AddFriendComponent = () => {
                 onCancel={handleCancel}
                 footer={[]}
             >
-                {contextHolder}
                 <Flex
                     vertical={true}
                     style={{
