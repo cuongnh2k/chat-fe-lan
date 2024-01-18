@@ -148,7 +148,7 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
             width={300}
             theme={"light"}
         >
-            <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} onRefresh={onRefresh} collapsed={collapsed}/>
+            <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} onRefresh={onRefresh} search={search} collapsed={collapsed}/>
             <ListCurrentChannelComponent onChangePage={onChangePage} search={search} data={data} collapsed={collapsed}/>
         </Sider>
     )

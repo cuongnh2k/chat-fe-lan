@@ -8,7 +8,7 @@ import UserSiderComponent from "./user/UserSiderComponent";
 import EllipsisComponent from "./EllipsisComponent";
 
 
-const AffixContentComponent = ({onChangeType, onChangeSearch,onRefresh, collapsed}) => {
+const AffixContentComponent = ({onChangeType, onChangeSearch, onRefresh,search, collapsed}) => {
     const [messageApi, contextHolder] = message.useMessage()
     return (
         <Affix
@@ -19,7 +19,7 @@ const AffixContentComponent = ({onChangeType, onChangeSearch,onRefresh, collapse
         >
             <div>
                 {contextHolder}
-                <EllipsisComponent/>
+                <EllipsisComponent onRefresh={onRefresh}/>
                 <Flex
                     style={{
                         paddingLeft: 16,
@@ -28,7 +28,7 @@ const AffixContentComponent = ({onChangeType, onChangeSearch,onRefresh, collapse
                 >
                     <UserSiderComponent/>
                     <AddFriendComponent messageApi={messageApi} onRefresh={onRefresh}/>
-                    <AddGroupComponent messageApi={messageApi} onRefresh={onRefresh}/>
+                    <AddGroupComponent messageApi={messageApi} onRefresh={onRefresh} search={search}/>
                 </Flex>
                 <SearchSiderComponent onChangeSearch={onChangeSearch}/>
                 <TabSiderComponent onChangeType={onChangeType}/>

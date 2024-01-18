@@ -51,7 +51,8 @@ const UserSiderComponent = () => {
                 dataSource={[
                     {
                         name: data.result && data.result.name,
-                        avatarUrl: data.result && data.result.avatarUrl
+                        avatarUrl: data.result && data.result.avatarUrl,
+                        email: data.result && data.result.email
                     },
                 ]}
                 onClick={showModal}
@@ -79,7 +80,19 @@ const UserSiderComponent = () => {
                                     {item.name}
                                 </Text>
                             }
-                            description="Đang hoạt động"
+                            description={
+                                <Text
+                                    style={{
+                                        width: 200,
+                                        color: "black"
+                                    }}
+                                    ellipsis={{
+                                        tooltip: item.email
+                                    }}
+                                >
+                                    {item.email}
+                                </Text>
+                            }
                         />
                     </List.Item>
                 )}

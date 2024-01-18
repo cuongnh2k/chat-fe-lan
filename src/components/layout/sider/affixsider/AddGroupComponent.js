@@ -5,7 +5,7 @@ import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import {useNavigate} from "react-router-dom";
 
-const AddGroupComponent = ({messageApi, onRefresh}) => {
+const AddGroupComponent = ({messageApi, onRefresh, search}) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const showModal = () => {
@@ -82,7 +82,7 @@ const AddGroupComponent = ({messageApi, onRefresh}) => {
             }
         }
         fetchAPI()
-    }, []);
+    }, [search]);
 
     const onChange = (newValue, newTitle) => {
         console.log(newValue, newTitle);
