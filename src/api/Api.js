@@ -35,12 +35,12 @@ const Api = {
         contentType: "application/json",
     },
     channelsChannelIdFilesGET: {
-        path: "/user/channels/{channelId}/files",
+        path: "/user/channels/",
         method: "GET",
         contentType: "application/json",
     },
     channelsChannelIdMemberGET: {
-        path: "/user/channels/{channelId}/member",
+        path: "/user/channels/",
         method: "GET",
         contentType: "application/json",
     },
