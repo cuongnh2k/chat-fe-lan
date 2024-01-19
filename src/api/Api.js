@@ -65,7 +65,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsAddUserGroupPOST: {
-        path: "/user/channels/{channelId}/add-user-group",
+        path: "/user/channels/",
         method: "POST",
         contentType: "application/json",
     },

@@ -1,4 +1,4 @@
-import {Affix, Avatar, Flex, List, Typography} from "antd";
+import {Affix, Avatar, Flex, List, message, Typography} from "antd";
 import React, {useEffect, useState} from "react";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {useSearchParams} from "react-router-dom";
@@ -13,6 +13,8 @@ const {Text} = Typography;
 const AffixContentComponent = ({clickCollapsed, collapsed}) => {
     const [data, setData] = useState({loading: false, result: null})
     const [searchParams] = useSearchParams()
+    const [messageApi, contextHolder] = message.useMessage()
+
     useEffect(() => {
         setData(o => ({...o, loading: true}))
         const fetchAPI = async () => {
@@ -44,6 +46,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                     visibility: data.result !== null ? "visible" : "hidden"
                 }}
             >
+                {contextHolder}
                 {collapsed
                     ? <MenuUnfoldOutlined
                         style={{
@@ -114,7 +117,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         )}
                     />
                     <SearchComponent/>
-                    <AddMemberComponent/>
+                    <AddMemberComponent messageApi={messageApi}/>
                     <InfoComponent/>
                 </Flex>
             </div>

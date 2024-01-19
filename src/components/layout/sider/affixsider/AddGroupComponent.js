@@ -85,7 +85,6 @@ const AddGroupComponent = ({messageApi, onRefresh, search}) => {
     }, [search]);
 
     const onChange = (newValue, newTitle) => {
-        console.log(newValue, newTitle);
         setValue(newValue);
         setUserIds(newTitle.map(o => o.props.children[0].props.alt))
     };
