@@ -1,6 +1,6 @@
-import {Affix, Divider, Dropdown, Flex, Input, Upload} from "antd";
+import {Affix, Divider, Flex, Input, Modal, Upload} from "antd";
 import React, {useState} from "react";
-import {EllipsisOutlined, FileAddOutlined, FolderAddOutlined, SendOutlined} from "@ant-design/icons";
+import {FileAddOutlined, FolderAddOutlined, SendOutlined} from "@ant-design/icons";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -8,6 +8,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 const {TextArea} = Input;
 const SendMessageComponent = () => {
     const [data, setData] = useState({loading: false})
+    const [open, setOpen] = useState(false);
     const [message, setMessage] = useState({content: "", files: []})
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
@@ -22,7 +23,7 @@ const SendMessageComponent = () => {
             const res = await response.json();
             if (res.success) {
                 // setData(o => ({...o, loading: false,}))
-                // setMessage(o => ({...o, content: "", files: []}))
+                setMessage(o => ({...o, content: "", files: []}))
             } else {
                 localStorage.removeItem("token")
                 navigate("/account")
@@ -51,7 +52,7 @@ const SendMessageComponent = () => {
                     const res = await response.json();
                     if (res.success) {
                         // setData(o => ({...o, loading: false,}))
-                        // setMessage(o => ({...o, content: "", files: []}))
+                        setMessage(o => ({...o, content: "", files: []}))
                     } else {
                         localStorage.removeItem("token")
                         navigate("/account")
@@ -64,14 +65,17 @@ const SendMessageComponent = () => {
             }
         }
     }
+
     const items = [
-        {
-            key: '1',
-            label: (
-                <p>ssss</p>
-            ),
-        },
-    ];
+        '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗',
+        '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟',
+        '😕', '🙁', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😶',
+        '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧',
+        '😮', '😲', '🥱', '😴', '🤤', '😪', '😮', '😵', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑',
+        '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '️👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼',
+        '😽', '🙀', '😿', '😾'
+    ]
+
     return (
         <Affix
             offsetBottom={0}
@@ -79,7 +83,7 @@ const SendMessageComponent = () => {
             <Flex
                 vertical={true}
                 style={{
-                    background: "rgb(224, 250, 255)",
+                    background: "white",
                 }}
             >
                 <Flex
@@ -129,20 +133,51 @@ const SendMessageComponent = () => {
                             }}
                         />
                     </Upload>
-                    <Dropdown
-                        menu={{items}}
-                        placement="top"
-                        arrow={{
-                            pointAtCenter: true,
-                        }}
-                    >
-                        <i className="bi bi-emoji-smile" style={{
+
+                    <i
+                        className="bi bi-emoji-smile"
+                        style={{
                             fontSize: 24,
                             marginLeft: 16,
                             marginBottom: 5,
                             cursor: "pointer"
-                        }}/>
-                    </Dropdown>
+                        }}
+                        onClick={() => setOpen(true)}
+                    />
+                    <Modal
+                        title=""
+                        open={open}
+                        onOk={() => setOpen(false)}
+                        onCancel={() => setOpen(false)}
+                        footer={[]}
+                        width={250}
+                        style={{
+                            top: 480,
+                            marginLeft: 300
+                        }}
+                    >
+                        <Flex
+                            wrap="wrap"
+                            gap="small"
+                            style={{
+                                fontSize: 24
+                            }}
+                        >
+                            {items.map(o =>
+                                <div
+                                    style={{cursor: "pointer"}}
+                                    onClick={(e) => {
+                                        setMessage(o => ({
+                                            ...o,
+                                            content: message.content + e.target.outerText
+                                        }))
+                                    }}
+                                >
+                                    {o}
+                                </div>
+                            )}
+                        </Flex>
+                    </Modal>
                     <div style={{width: "100%"}}></div>
                     <SendOutlined
                         style={{
@@ -159,19 +194,18 @@ const SendMessageComponent = () => {
                         margin: 0
                     }}
                 />
-                <TextArea
+                <textarea
+                    rows="4"
                     style={{
-                        // overflow: "hidden",
-                        resize: "none",
-                        padding: 16
+                        margin: "0 16px 16px 16px",
+                        border: "none",
+                        outline: "none",
                     }}
-                    bordered={false}
-                    rows={3}
                     placeholder="Nhập tin nhắn"
                     onChange={(e) => setMessage(o => ({...o, content: e.target.value}))}
+                    value={message.content}
                 >
-                    message.content
-                </TextArea>
+                </textarea>
             </Flex>
         </Affix>
     )
