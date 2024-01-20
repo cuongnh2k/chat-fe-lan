@@ -8,7 +8,7 @@ import SockJS from "sockjs-client";
 import {over} from "stompjs";
 
 const {Text} = Typography;
-const ContainerHeight = window.innerHeight - 234;
+const ContainerHeight = window.innerHeight - 238;
 
 const ListMessageComponent = () => {
     let stompClient = null;
@@ -166,7 +166,17 @@ const ListMessageComponent = () => {
                                     {item.files.map(o => {
                                         return o.contentType.startsWith("image")
                                             ? <Image src={o.url}/>
-                                            : <a href={o.url} target="_blank">{o.name}</a>
+                                            : (o.contentType.startsWith("video")
+                                                    ? <video width={632} height={632} controls>
+                                                        <source src={o.url} type={o.contentType}/>
+                                                    </video>
+                                                    : (o.contentType.startsWith("audio")
+                                                            ? <audio controls>
+                                                                <source src={o.url} type={o.contentType}/>
+                                                            </audio>
+                                                            : <a href={o.url} target="_blank">{o.name}</a>
+                                                    )
+                                            )
                                     })
                                     }
                                 </Card>
@@ -191,7 +201,20 @@ const ListMessageComponent = () => {
                                     {item.files.map(o => {
                                         return o.contentType.startsWith("image")
                                             ? <Image src={o.url}/>
-                                            : <a href={o.url} target="_blank">{o.name}</a>
+                                            : (o.contentType.startsWith("video")
+                                                    ? <video width={632} height={632} controls>
+                                                        <source src={o.url} type={o.contentType}/>
+                                                    </video>
+                                                    : (o.contentType.startsWith("audio")
+                                                            ? <audio controls>
+                                                                <source src={o.url} type={o.contentType}/>
+                                                            </audio>
+                                                            : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
+                                                                    ? <iframe width={632} height={632} src={o.url}/>
+                                                                    : <a style={{color: "red"}} href={o.url} target="_blank">{o.name}</a>
+                                                            )
+                                                    )
+                                            )
                                     })
                                     }
                                 </Card>
