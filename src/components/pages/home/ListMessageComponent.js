@@ -8,7 +8,7 @@ import SockJS from "sockjs-client";
 import {over} from "stompjs";
 
 const {Text} = Typography;
-const ContainerHeight = window.innerHeight - 228;
+const ContainerHeight = window.innerHeight - 234;
 
 const ListMessageComponent = () => {
     let stompClient = null;
