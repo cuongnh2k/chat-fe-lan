@@ -163,6 +163,12 @@ const ListMessageComponent = () => {
                                     <Text>
                                         {item.content}
                                     </Text>
+                                    {item.files.map(o => {
+                                        return o.contentType.startsWith("image")
+                                            ? <Image src={o.url}/>
+                                            : <a href={o.url} target="_blank">{o.name}</a>
+                                    })
+                                    }
                                 </Card>
                             </Flex>
                             : <Flex
@@ -182,12 +188,11 @@ const ListMessageComponent = () => {
                                     <Text>
                                         {item.content}
                                     </Text>
-                                    {item.files.length > 0
-                                        ?
-                                        (item.files[0].contentType.startsWith("image")
-                                            ? <Image src={item.files[0].url}/>
-                                            : <a href={item.files[0].url} target="_blank">{item.files[0].name}</a>)
-                                        : ""
+                                    {item.files.map(o => {
+                                        return o.contentType.startsWith("image")
+                                            ? <Image src={o.url}/>
+                                            : <a href={o.url} target="_blank">{o.name}</a>
+                                    })
                                     }
                                 </Card>
                             </Flex>

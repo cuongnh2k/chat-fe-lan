@@ -1,6 +1,6 @@
 import {Affix, Divider, Flex, Input, Upload} from "antd";
 import React, {useState} from "react";
-import {FrownOutlined, SendOutlined, UploadOutlined} from "@ant-design/icons";
+import {FileAddOutlined, FolderAddOutlined, SendOutlined} from "@ant-design/icons";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -8,7 +8,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 const {TextArea} = Input;
 const SendMessageComponent = () => {
     const [data, setData] = useState({loading: false})
-    const [message, setMessage] = useState({content: "", files: null})
+    const [message, setMessage] = useState({content: "", files: []})
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
     const send = () => {
@@ -17,12 +17,12 @@ const SendMessageComponent = () => {
         const fetchAPI = async () => {
             const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
                 `${searchParams.get("channelId")}/messages`,
-                JSON.stringify({content: message.content, files: message.files})
+                JSON.stringify({content: message.content})
             )
             const res = await response.json();
             if (res.success) {
-                setData(o => ({...o, loading: false,}))
-                setMessage(o => ({...o, content: "", files: []}))
+                // setData(o => ({...o, loading: false,}))
+                // setMessage(o => ({...o, content: "", files: []}))
             } else {
                 localStorage.removeItem("token")
                 navigate("/account")
@@ -32,51 +32,38 @@ const SendMessageComponent = () => {
         // }
     }
 
-    const props = {
-        name: 'file',
-        action: `${process.env.REACT_APP_HOST}${Api.filesPOST.path}`,
-        headers: {
-            "Authorization": localStorage.getItem("token")
-        },
-        onChange(info) {
-            if (info.fileList.length === 0) {
+    const onChangeFiles = (info) => {
+        if (info.file.status === 'done') {
+            if (info.file.response.success) {
+
+                let files = [];
+                files = message.files.concat({
+                    contentType: info.file.response.data.contentType,
+                    name: info.file.response.data.name,
+                    size: info.file.response.data.size,
+                    url: info.file.response.data.url
+                })
                 const fetchAPI = async () => {
-                    await UseFetch(Api.filesFileIdDELETE,
-                        `${info.file.response.data.id}`
+                    const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
+                        `${searchParams.get("channelId")}/messages`,
+                        JSON.stringify({files: files})
                     )
+                    const res = await response.json();
+                    if (res.success) {
+                        // setData(o => ({...o, loading: false,}))
+                        // setMessage(o => ({...o, content: "", files: []}))
+                    } else {
+                        localStorage.removeItem("token")
+                        navigate("/account")
+                    }
                 }
                 fetchAPI()
-            } else if (info.fileList.length > 1) {
-                const fetchAPI = async () => {
-                    await UseFetch(Api.filesFileIdDELETE,
-                        `${info.fileList[0].response.data.id}`
-                    )
-                }
-                fetchAPI()
-                info.fileList.shift()
+            } else {
+                localStorage.removeItem("token")
+                navigate("/account")
             }
-            if (info.file.status === 'done') {
-                if (info.file.response.success) {
-                    setMessage(o => (
-                        {
-                            ...o,
-                            files: [
-                                {
-                                    contentType: info.file.response.data.contentType,
-                                    name: info.file.response.data.name,
-                                    size: info.file.response.data.size,
-                                    url: info.file.response.data.url
-                                }
-                            ]
-                        }
-                    ))
-                } else {
-                    localStorage.removeItem("token")
-                    navigate("/account")
-                }
-            }
-        },
-    };
+        }
+    }
 
     return (
         <Affix
@@ -97,22 +84,50 @@ const SendMessageComponent = () => {
                     }}
                 >
                     <Upload
-                        {...props}
+                        multiple={true}
+                        // directory={false}
+                        name='file'
+                        action={`${process.env.REACT_APP_HOST}${Api.filesPOST.path}`}
+                        headers={
+                            {"Authorization": localStorage.getItem("token")}
+                        }
+                        onChange={onChangeFiles}
+                        showUploadList={false}
                     >
-                        <UploadOutlined
+                        <FileAddOutlined
                             style={{
                                 cursor: "pointer",
                                 fontSize: 24,
+                                marginTop: 5
                             }}
                         />
                     </Upload>
-                    <FrownOutlined
-                        style={{
-                            fontSize: 24,
-                            marginLeft: 16,
-                            cursor: "pointer"
-                        }}
-                    />
+                    <Upload
+                        multiple={true}
+                        directory={true}
+                        name='file'
+                        action={`${process.env.REACT_APP_HOST}${Api.filesPOST.path}`}
+                        headers={
+                            {"Authorization": localStorage.getItem("token")}
+                        }
+                        onChange={onChangeFiles}
+                        showUploadList={false}
+                    >
+                        <FolderAddOutlined
+                            style={{
+                                cursor: "pointer",
+                                fontSize: 24,
+                                marginLeft: 16,
+                                marginTop: 5
+                            }}
+                        />
+                    </Upload>
+                    <i className="bi bi-emoji-smile" style={{
+                        fontSize: 24,
+                        marginLeft: 16,
+                        marginBottom: 5,
+                        cursor: "pointer"
+                    }}/>
                     <div style={{width: "100%"}}></div>
                     <SendOutlined
                         style={{
