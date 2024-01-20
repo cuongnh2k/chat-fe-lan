@@ -117,8 +117,11 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         )}
                     />
                     <SearchComponent/>
-                    <AddMemberComponent messageApi={messageApi}/>
-                    <InfoComponent/>
+                    {data.result.type === "GROUP"
+                        ? <AddMemberComponent messageApi={messageApi}/>
+                        : ""
+                    }
+                    <InfoComponent data={data}/>
                 </Flex>
             </div>
         </Affix>

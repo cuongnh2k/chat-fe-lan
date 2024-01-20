@@ -135,7 +135,7 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
             style={{
                 height: window.innerHeight,
                 border: "1px solid LightGrey",
-
+                background: "rgb(224, 250, 255)"
             }}
             breakpoint="md"
             collapsedWidth="1"
@@ -148,7 +148,8 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
             width={300}
             theme={"light"}
         >
-            <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} onRefresh={onRefresh} search={search} collapsed={collapsed}/>
+            <AffixSiderComponent onChangeType={onChangeType} onChangeSearch={onChangeSearch} onRefresh={onRefresh}
+                                 search={search} collapsed={collapsed}/>
             <ListCurrentChannelComponent onChangePage={onChangePage} search={search} data={data} collapsed={collapsed}/>
         </Sider>
     )

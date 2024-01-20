@@ -4,21 +4,24 @@ import React from "react";
 import ListMemberComponent from "./ListMemberComponent";
 import ListFileComponent from "./ListFileComponent";
 
-const items = [
-    {
-        key: '1',
-        label: (
-            <ListMemberComponent/>
-        ),
-    },
-    {
-        key: '2',
-        label: (
-            <ListFileComponent/>
-        ),
-    },
-];
-const InfoComponent = () => {
+const InfoComponent = ({data}) => {
+    let items = [
+        {
+            key: '1',
+            label: (
+                <ListMemberComponent/>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <ListFileComponent/>
+            ),
+        },
+    ];
+    if (data.result.type === "FRIEND") {
+        items.shift()
+    }
     return (
         <Dropdown
             menu={{items}}

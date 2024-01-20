@@ -174,7 +174,10 @@ const ListMessageComponent = () => {
                                                             ? <audio controls>
                                                                 <source src={o.url} type={o.contentType}/>
                                                             </audio>
-                                                            : <a href={o.url} target="_blank">{o.name}</a>
+                                                            : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
+                                                                    ? <iframe width={632} height={632} src={o.url}/>
+                                                                    : <a style={{color: "red"}} href={o.url} target="_blank">{o.name}</a>
+                                                            )
                                                     )
                                             )
                                     })

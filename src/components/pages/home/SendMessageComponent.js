@@ -72,7 +72,7 @@ const SendMessageComponent = () => {
             <Flex
                 vertical={true}
                 style={{
-                    background: "white",
+                    background: "rgb(224, 250, 255)",
                 }}
             >
                 <Flex

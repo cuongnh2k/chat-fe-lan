@@ -9,7 +9,7 @@ const ContentComponent = ({children, clickCollapsed, collapsed}) => {
         <Layout
             style={{
                 height: window.innerHeight,
-                background: "white"
+                background: "rgb(224, 250, 255)"
             }}
         >
             <AffixContentComponent clickCollapsed={clickCollapsed} collapsed={collapsed}/>
