@@ -153,8 +153,10 @@ const SendMessageComponent = () => {
                         width={250}
                         style={{
                             top: 480,
-                            marginLeft: 300
+                            marginLeft: 300,
                         }}
+                        bodyStyle={{ overflowY: 'auto', maxHeight: 200 }}
+                        closeIcon={null}
                     >
                         <Flex
                             wrap="wrap"
