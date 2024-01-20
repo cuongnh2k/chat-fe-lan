@@ -19,7 +19,7 @@ const InfoComponent = ({data}) => {
             ),
         },
     ];
-    if (data.result.type === "FRIEND") {
+    if (data.result&&data.result.type === "FRIEND") {
         items.shift()
     }
     return (

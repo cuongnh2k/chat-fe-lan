@@ -1,6 +1,6 @@
-import {Affix, Divider, Flex, Input, Upload} from "antd";
+import {Affix, Divider, Dropdown, Flex, Input, Upload} from "antd";
 import React, {useState} from "react";
-import {FileAddOutlined, FolderAddOutlined, SendOutlined} from "@ant-design/icons";
+import {EllipsisOutlined, FileAddOutlined, FolderAddOutlined, SendOutlined} from "@ant-design/icons";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -64,7 +64,14 @@ const SendMessageComponent = () => {
             }
         }
     }
-
+    const items = [
+        {
+            key: '1',
+            label: (
+                <p>ssss</p>
+            ),
+        },
+    ];
     return (
         <Affix
             offsetBottom={0}
@@ -122,12 +129,20 @@ const SendMessageComponent = () => {
                             }}
                         />
                     </Upload>
-                    <i className="bi bi-emoji-smile" style={{
-                        fontSize: 24,
-                        marginLeft: 16,
-                        marginBottom: 5,
-                        cursor: "pointer"
-                    }}/>
+                    <Dropdown
+                        menu={{items}}
+                        placement="top"
+                        arrow={{
+                            pointAtCenter: true,
+                        }}
+                    >
+                        <i className="bi bi-emoji-smile" style={{
+                            fontSize: 24,
+                            marginLeft: 16,
+                            marginBottom: 5,
+                            cursor: "pointer"
+                        }}/>
+                    </Dropdown>
                     <div style={{width: "100%"}}></div>
                     <SendOutlined
                         style={{

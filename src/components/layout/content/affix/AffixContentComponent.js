@@ -117,7 +117,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         )}
                     />
                     <SearchComponent/>
-                    {data.result.type === "GROUP"
+                    {data.result&&data.result.type === "GROUP"
                         ? <AddMemberComponent messageApi={messageApi}/>
                         : ""
                     }
