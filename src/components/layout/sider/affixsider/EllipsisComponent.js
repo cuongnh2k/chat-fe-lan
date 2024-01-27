@@ -1,4 +1,4 @@
-import {Avatar, Button, Dropdown, Flex, List, message, Modal, Typography} from "antd";
+import {Avatar, Badge, Button, Dropdown, Flex, List, message, Modal, Typography} from "antd";
 import {EllipsisOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -43,26 +43,34 @@ const EllipsisComponent = ({onRefresh}) => {
                 <Text
                     onClick={showModal}
                 >
-                    Lời mời kết bạn
+                    Lời mời kết bạn <Badge
+                    className="site-badge-count-109"
+                    count={data.result ? data.result.content.length : 0}
+                    style={{
+                        backgroundColor: '#52c41a',
+                    }}
+                />
                 </Text>
             ),
         },
     ];
 
     useEffect(() => {
-        const fetchAPI = async () => {
-            const response = await UseFetch(Api.channelsGET,
-                "?type=FRIEND&status=NEW"
-            )
-            const res = await response.json();
-            if (res.success) {
-                setData(o => ({...o, result: res.data}))
-            } else {
-                localStorage.removeItem("token")
-                navigate("/account")
+        setInterval(() => {
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsGET,
+                    "?type=FRIEND&status=NEW"
+                )
+                const res = await response.json();
+                if (res.success) {
+                    setData(o => ({...o, result: res.data}))
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
             }
-        }
-        fetchAPI()
+            fetchAPI()
+        }, 5000)
     }, [refresh]);
 
     const reactUser = (channelId, status) => {
