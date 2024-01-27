@@ -36,7 +36,6 @@ const LayoutComponent = ({children}) => {
                 });
             },
             (err) => {
-                console.log(err);
             }
         );
     }

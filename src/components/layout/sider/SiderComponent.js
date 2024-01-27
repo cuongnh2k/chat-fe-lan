@@ -28,7 +28,26 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
     useEffect(() => {
         if (notify !== null) {
             let list = data.result;
-            list.push(JSON.parse(notify));
+
+            const x = JSON.parse(notify)
+            if (x.currentMessage.type === 'CREATE') {
+                list.push(x);
+            } else if (x.currentMessage.type === 'UPDATE') {
+                list.forEach(o => {
+                    if (o.id === x.id) {
+                        o.currentMessage.content = x.currentMessage.content
+                    }
+                })
+            } else if (x.currentMessage.type === 'DELETE') {
+                let index
+                list.forEach((o, i) => {
+                    if (o.id === x.id) {
+                        index = i
+                    }
+                })
+                list.splice(index, 1);
+            }
+
             list = list.sort((a, b) => {
                 if (a.currentMessage && b.currentMessage) {
                     return a.currentMessage.createdAt - b.currentMessage.createdAt
@@ -54,7 +73,6 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
                 }
                 return a.createdAt - b.createdAt
             })
-            console.log(list)
             setData(o => (
                 {
                     ...o,
