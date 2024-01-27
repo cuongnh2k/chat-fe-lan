@@ -75,7 +75,9 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         dataSource={[
                             {
                                 name: data.result && data.result.name,
-                                avatarUrl: data.result && data.result.avatarUrl
+                                avatarUrl: data.result && data.result.avatarUrl,
+                                email: data.result && data.result.email,
+                                type: data.result && data.result.type
                             },
                         ]}
                         renderItem={(item, index) => (
@@ -109,7 +111,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                                                 width: 200,
                                             }}
                                         >
-                                            {`Đang hoạt động`}
+                                            {item.type === "FRIEND" ? item.email : ""}
                                         </Text>
                                     }
                                 />
@@ -117,7 +119,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         )}
                     />
                     <SearchComponent/>
-                    {data.result&&data.result.type === "GROUP"
+                    {data.result && data.result.type === "GROUP"
                         ? <AddMemberComponent messageApi={messageApi}/>
                         : ""
                     }

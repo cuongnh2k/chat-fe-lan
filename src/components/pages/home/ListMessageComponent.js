@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Card, Flex, Image, List, Typography} from 'antd';
+import {Avatar, Card, Dropdown, Flex, Image, List, Typography} from 'antd';
 import {useSearchParams} from "react-router-dom";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
+import {EllipsisOutlined} from "@ant-design/icons";
 
 const {Text} = Typography;
 const ContainerHeight = window.innerHeight - 225;
@@ -14,7 +15,7 @@ const ListMessageComponent = () => {
     let stompClient = null;
     const [data, setData] = useState({loading: false, result: [], totalItem: 0})
     const [searchParams, setSearchParams] = useSearchParams()
-    const [search, setSearch] = useState({content: "", size: 1000,})
+    const [search] = useState({content: "", size: 1000,})
     const [notify, setNotify] = useState(null)
 
     const token = localStorage.getItem("token")
@@ -115,6 +116,32 @@ const ListMessageComponent = () => {
         }
     };
 
+    const items = [
+        {
+            key: '1',
+            label: (
+                <Text
+                    // onClick={() => {
+                    //     localStorage.removeItem("token")
+                    //     navigate("/account")
+                    // }}
+                >
+                    Sửa
+                </Text>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <Text
+                    // onClick={showModal}
+                >
+                    Xóa
+                </Text>
+            ),
+        },
+    ];
+
     return (
         <div
             id="scrollableDiv"
@@ -176,7 +203,8 @@ const ListMessageComponent = () => {
                                                             </audio>
                                                             : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
                                                                     ? <iframe width={632} height={632} src={o.url}/>
-                                                                    : <a style={{color: "red"}} href={o.url} target="_blank">{o.name}</a>
+                                                                    : <a style={{color: "red"}} href={o.url}
+                                                                         target="_blank">{o.name}</a>
                                                             )
                                                     )
                                             )
@@ -191,6 +219,27 @@ const ListMessageComponent = () => {
                                 }}
                                 justify={"flex-end"}
                             >
+                                <Flex
+                                    style={{
+                                        height: 24
+                                    }}
+                                >
+                                    <Dropdown
+                                        menu={{items}}
+                                        placement="bottomCenter"
+                                        arrow={{
+                                            pointAtCenter: true,
+                                        }}
+                                    >
+                                        <EllipsisOutlined
+                                            style={{
+                                                fontSize: 24,
+                                                cursor: "pointer",
+                                                marginRight: 10
+                                            }}
+                                        />
+                                    </Dropdown>
+                                </Flex>
                                 <Card
                                     style={{
                                         maxWidth: 664,
@@ -214,7 +263,8 @@ const ListMessageComponent = () => {
                                                             </audio>
                                                             : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
                                                                     ? <iframe width={632} height={632} src={o.url}/>
-                                                                    : <a style={{color: "red"}} href={o.url} target="_blank">{o.name}</a>
+                                                                    : <a style={{color: "red"}} href={o.url}
+                                                                         target="_blank">{o.name}</a>
                                                             )
                                                     )
                                             )
