@@ -20,7 +20,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsChannelIdMessagesMessageIdDELETE: {
-        path: "/user/channels/{channelId}/messages/{messageId}",
+        path: "/user/channels/",
         method: "DELETE",
         contentType: "application/json",
     },

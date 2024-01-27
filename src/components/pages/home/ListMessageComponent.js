@@ -135,6 +135,14 @@ const ListMessageComponent = ({setContent}) => {
         }
     };
 
+    const callApi = (messageId) => {
+        const fetchAPI = async () => {
+            await UseFetch(Api.channelsChannelIdMessagesMessageIdDELETE,
+                `${searchParams.get("channelId")}/messages/${messageId}`)
+        }
+        fetchAPI()
+    };
+
     return (
         <div
             id="scrollableDiv"
@@ -172,7 +180,9 @@ const ListMessageComponent = ({setContent}) => {
                             {
                                 key: item.id + "2",
                                 label: (
-                                    <Text>
+                                    <Text
+                                        onClick={() => callApi(item.id)}
+                                    >
                                         Xóa
                                     </Text>
                                 ),
