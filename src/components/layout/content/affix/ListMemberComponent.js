@@ -12,20 +12,22 @@ const ListMemberComponent = () => {
     const [searchParams] = useSearchParams()
 
     useEffect(() => {
-        setData(o => ({...o, loading: true}))
-        const fetchAPI = async () => {
-            const response = await UseFetch(Api.channelsChannelIdMemberGET,
-                `${searchParams.get("channelId")}/member`)
-            const res = await response.json();
-            if (res.success) {
-                setData(o => ({...o, loading: false, result: res.data}))
-            } else {
-                localStorage.removeItem("token")
-                navigate("/account")
+        if (isModalOpen === true) {
+            setData(o => ({...o, loading: true}))
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsChannelIdMemberGET,
+                    `${searchParams.get("channelId")}/member`)
+                const res = await response.json();
+                if (res.success) {
+                    setData(o => ({...o, loading: false, result: res.data}))
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
             }
+            fetchAPI()
         }
-        fetchAPI()
-    }, [searchParams])
+    }, [searchParams, isModalOpen])
 
     const showModal = () => {
         setIsModalOpen(true);

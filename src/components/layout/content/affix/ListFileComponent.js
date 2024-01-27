@@ -13,20 +13,22 @@ const ListFileComponent = () => {
     const [searchParams] = useSearchParams()
 
     useEffect(() => {
-        setData(o => ({...o, loading: true}))
-        const fetchAPI = async () => {
-            const response = await UseFetch(Api.channelsChannelIdFilesGET,
-                `${searchParams.get("channelId")}/files`)
-            const res = await response.json();
-            if (res.success) {
-                setData(o => ({...o, loading: false, result: res.data}))
-            } else {
-                localStorage.removeItem("token")
-                navigate("/account")
+        if (isModalOpen === true) {
+            setData(o => ({...o, loading: true}))
+            const fetchAPI = async () => {
+                const response = await UseFetch(Api.channelsChannelIdFilesGET,
+                    `${searchParams.get("channelId")}/files`)
+                const res = await response.json();
+                if (res.success) {
+                    setData(o => ({...o, loading: false, result: res.data}))
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
             }
+            fetchAPI()
         }
-        fetchAPI()
-    }, [searchParams])
+    }, [searchParams, isModalOpen])
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -55,7 +57,11 @@ const ListFileComponent = () => {
                     size="large"
                     bordered
                     dataSource={data.result ? data.result.content : []}
-                    renderItem={(item) => <List.Item>{item.name}</List.Item>}
+                    renderItem={(item) =>
+                        <List.Item>
+                            <a style={{color: "red"}} href={item.url} target="_blank">{item.name}</a>
+                        </List.Item>
+                    }
                 />
             </Modal>
         </>
