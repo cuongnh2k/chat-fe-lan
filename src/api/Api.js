@@ -50,7 +50,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsChannelIdMessagesMessageIdPATCH: {
-        path: "/user/channels/{channelId}/messages/{messageId}",
+        path: "/user/channels/",
         method: "PATCH",
         contentType: "application/json",
     },

@@ -1,32 +1,44 @@
-import {Affix, Divider, Flex, Input, Modal, Upload} from "antd";
+import {Affix, Divider, Flex, Modal, Upload} from "antd";
 import React, {useState} from "react";
 import {FileAddOutlined, FolderAddOutlined, SendOutlined} from "@ant-design/icons";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
-const {TextArea} = Input;
-const SendMessageComponent = () => {
+const SendMessageComponent = ({editContent, setContent}) => {
     const [data, setData] = useState({loading: false})
     const [open, setOpen] = useState(false);
-    const [message, setMessage] = useState({content: "", files: []})
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
+
     const send = () => {
         // if (message.content !== "") {
         setData(o => ({...o, loading: true}))
         const fetchAPI = async () => {
-            const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
-                `${searchParams.get("channelId")}/messages`,
-                JSON.stringify({content: message.content})
-            )
-            const res = await response.json();
-            if (res.success) {
-                // setData(o => ({...o, loading: false,}))
-                setMessage(o => ({...o, content: "", files: []}))
+            if (editContent.id != null) {
+                const response = await UseFetch(Api.channelsChannelIdMessagesMessageIdPATCH,
+                    `${searchParams.get("channelId")}/messages/${editContent.id}`,
+                    JSON.stringify({content: editContent.content})
+                )
+                const res = await response.json();
+                if (res.success) {
+                    setContent(null, null)
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
             } else {
-                localStorage.removeItem("token")
-                navigate("/account")
+                const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
+                    `${searchParams.get("channelId")}/messages`,
+                    JSON.stringify({content: editContent.content})
+                )
+                const res = await response.json();
+                if (res.success) {
+                    setContent(null, null)
+                } else {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                }
             }
         }
         fetchAPI()
@@ -37,13 +49,12 @@ const SendMessageComponent = () => {
         if (info.file.status === 'done') {
             if (info.file.response.success) {
 
-                let files = [];
-                files = message.files.concat({
+                let files = [{
                     contentType: info.file.response.data.contentType,
                     name: info.file.response.data.name,
                     size: info.file.response.data.size,
                     url: info.file.response.data.url
-                })
+                }]
                 const fetchAPI = async () => {
                     const response = await UseFetch(Api.channelsChannelIdMessagesPOST,
                         `${searchParams.get("channelId")}/messages`,
@@ -52,7 +63,6 @@ const SendMessageComponent = () => {
                     const res = await response.json();
                     if (res.success) {
                         // setData(o => ({...o, loading: false,}))
-                        setMessage(o => ({...o, content: "", files: []}))
                     } else {
                         localStorage.removeItem("token")
                         navigate("/account")
@@ -155,7 +165,7 @@ const SendMessageComponent = () => {
                             top: 480,
                             marginLeft: 300,
                         }}
-                        bodyStyle={{ overflowY: 'auto', maxHeight: 200 }}
+                        bodyStyle={{overflowY: 'auto', maxHeight: 200}}
                         closeIcon={null}
                     >
                         <Flex
@@ -169,10 +179,7 @@ const SendMessageComponent = () => {
                                 <div
                                     style={{cursor: "pointer"}}
                                     onClick={(e) => {
-                                        setMessage(o => ({
-                                            ...o,
-                                            content: message.content + e.target.outerText
-                                        }))
+                                        setContent('1', editContent.content + e.target.outerText)
                                     }}
                                 >
                                     {o}
@@ -202,10 +209,14 @@ const SendMessageComponent = () => {
                         margin: "0 16px 16px 16px",
                         border: "none",
                         outline: "none",
+                        resize: "none"
                     }}
                     placeholder="Nhập tin nhắn"
-                    onChange={(e) => setMessage(o => ({...o, content: e.target.value}))}
-                    value={message.content}
+                    onChange={(e) =>
+                        setContent('1', e.target.value)
+                    }
+                    // defaultValue={editContent.id != null ? editContent.content : message.content}
+                    value={editContent.content}
                 >
                 </textarea>
             </Flex>

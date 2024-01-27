@@ -56,7 +56,7 @@ const EllipsisComponent = ({onRefresh}) => {
     ];
 
     useEffect(() => {
-        setInterval(() => {
+        // setInterval(() => {
             const fetchAPI = async () => {
                 const response = await UseFetch(Api.channelsGET,
                     "?type=FRIEND&status=NEW"
@@ -70,7 +70,7 @@ const EllipsisComponent = ({onRefresh}) => {
                 }
             }
             fetchAPI()
-        }, 5000)
+        // }, 5000)
     }, [refresh]);
 
     const reactUser = (channelId, status) => {

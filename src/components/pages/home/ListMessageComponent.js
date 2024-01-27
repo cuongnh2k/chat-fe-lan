@@ -11,7 +11,7 @@ import {EllipsisOutlined} from "@ant-design/icons";
 const {Text} = Typography;
 const ContainerHeight = window.innerHeight - 225;
 
-const ListMessageComponent = () => {
+const ListMessageComponent = ({setContent}) => {
     let stompClient = null;
     const [data, setData] = useState({loading: false, result: [], totalItem: 0})
     const [searchParams, setSearchParams] = useSearchParams()
@@ -25,30 +25,49 @@ const ListMessageComponent = () => {
     } catch (o) {
     }
 
-    const connect = () => {
-        let Sock = new SockJS(`${process.env.REACT_APP_HOST}/wsjs?token=${token}`);
-        stompClient = over(Sock);
-        stompClient.connect({},
-            () => {
-                stompClient.subscribe('/user/' + sub + '/private', (payload) => {
-                    let res = payload.body;
-                    setNotify(res)
-                });
-            },
-            (err) => {
-                console.log(err);
-            }
-        );
-    }
-    connect()
+    useEffect(() => {
+        const connect = () => {
+            let Sock = new SockJS(`${process.env.REACT_APP_HOST}/wsjs?token=${token}`);
+            stompClient = over(Sock);
+            stompClient.connect({},
+                () => {
+                    stompClient.subscribe('/user/' + sub + '/private', (payload) => {
+                        let res = payload.body;
+                        setNotify(res)
+                    });
+                },
+                (err) => {
+                    // console.log(err);
+                }
+            );
+        }
+        connect()
+    }, [])
 
     useEffect(() => {
         if (notify !== null) {
             let list = data.result;
-            list.push(JSON.parse(notify).currentMessage);
+            const currentMessage = JSON.parse(notify).currentMessage
+            if (currentMessage.type === 'CREATE') {
+                list.push(currentMessage);
+            } else if (currentMessage.type === 'UPDATE') {
+                list.forEach(o => {
+                    if (o.id === currentMessage.id) {
+                        o.content = currentMessage.content
+                    }
+                })
+            } else if (currentMessage.type === 'DELETE') {
+                let index
+                list.forEach((o, i) => {
+                    if (o.id === currentMessage.id) {
+                        index = i
+                    }
+                })
+                list.splice(index, 1);
+            }
             list.sort((a, b) => a.createdAt - b.createdAt)
             list = [...new Map(list.map(item => [item["id"], item])).values()];
-            console.log(list)
+
             setData(o => (
                 {
                     ...o,
@@ -116,32 +135,6 @@ const ListMessageComponent = () => {
         }
     };
 
-    const items = [
-        {
-            key: '1',
-            label: (
-                <Text
-                    // onClick={() => {
-                    //     localStorage.removeItem("token")
-                    //     navigate("/account")
-                    // }}
-                >
-                    Sửa
-                </Text>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <Text
-                    // onClick={showModal}
-                >
-                    Xóa
-                </Text>
-            ),
-        },
-    ];
-
     return (
         <div
             id="scrollableDiv"
@@ -164,8 +157,28 @@ const ListMessageComponent = () => {
             >
                 <List
                     dataSource={data.result}
-                    renderItem={(item) =>
-                        item.sender.id !== sub
+                    renderItem={(item) => {
+                        const items = [
+                            {
+                                key: item.id + "1",
+                                label: (
+                                    <Text
+                                        onClick={() => setContent(item.id, item.content)}
+                                    >
+                                        Sửa
+                                    </Text>
+                                ),
+                            },
+                            {
+                                key: item.id + "2",
+                                label: (
+                                    <Text>
+                                        Xóa
+                                    </Text>
+                                ),
+                            },
+                        ];
+                        return item.sender.id !== sub
                             ? <Flex
                                 key={item.id}
                                 style={{
@@ -226,14 +239,13 @@ const ListMessageComponent = () => {
                                 >
                                     <Dropdown
                                         menu={{items}}
-                                        placement="bottomCenter"
+                                        placement="bottomRight"
                                         arrow={{
                                             pointAtCenter: true,
                                         }}
                                     >
                                         <EllipsisOutlined
                                             style={{
-                                                fontSize: 24,
                                                 cursor: "pointer",
                                                 marginRight: 10
                                             }}
@@ -272,7 +284,7 @@ const ListMessageComponent = () => {
                                     }
                                 </Card>
                             </Flex>
-                    }
+                    }}
                 />
             </InfiniteScroll>
         </div>
