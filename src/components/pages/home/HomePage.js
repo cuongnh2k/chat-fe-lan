@@ -19,12 +19,12 @@ const HomePage = () => {
         setEditContent(o => {
             if (id !== '1') {
                 o.id = id
+                return ({...o, id: id, content: content})
+            } else {
+                return ({...o, content: content})
             }
-            o.content = content
-            return o
         })
     }
-
     return (
         <LayoutComponent>
             <ListMessageComponent setContent={setContent}/>

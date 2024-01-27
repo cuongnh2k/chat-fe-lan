@@ -86,7 +86,7 @@ const SendMessageComponent = ({editContent, setContent}) => {
         '😽', '🙀', '😿', '😾'
     ]
 
-    console.log(editContent)
+    console.log("hehe", editContent)
     return (
         <Affix
             offsetBottom={0}
@@ -217,9 +217,9 @@ const SendMessageComponent = ({editContent, setContent}) => {
                         setContent('1', e.target.value)
                     }
                     // defaultValue={editContent.id != null ? editContent.content : message.content}
-                    // value={editContent.content}
+                    value={editContent.content}
                 >
-                    {editContent.content}
+                    {/*{editContent.content}*/}
                 </textarea>
             </Flex>
         </Affix>
