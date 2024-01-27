@@ -106,7 +106,7 @@ const Api = {
     },
     usersToAddFriendGET: {
         path: "/user/users/to-add-friend",
-        method: "GET",
+        method: "POST",
         contentType: "application/json",
     },
     usersToAddGroupGET: {

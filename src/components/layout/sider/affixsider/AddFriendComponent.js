@@ -13,10 +13,13 @@ const AddFriendComponent = ({messageApi, onRefresh}) => {
     const navigate = useNavigate();
     const callApi = () => {
         const fetchAPI = async () => {
-            const response = await UseFetch(Api.usersToAddFriendGET, `?email=${input}`)
+            const response = await UseFetch(Api.usersToAddFriendGET,
+                "",
+                JSON.stringify([input])
+            )
             const res = await response.json();
             if (res.success) {
-                setData(o => ({...o, loading: false, result: res.data}))
+                setData(o => ({...o, loading: false, result: res.data[0]}))
             } else {
                 if (res.errorCode === 401) {
                     localStorage.removeItem("token")
