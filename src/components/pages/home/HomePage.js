@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 const HomePage = () => {
     const navigate = useNavigate();
 
-    const [editContent, setEditContent] = useState({id: null, content: null})
+    const [editContent, setEditContent] = useState({id: null, content: ""})
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {
