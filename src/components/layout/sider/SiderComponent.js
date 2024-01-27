@@ -39,13 +39,11 @@ const SiderComponent = ({responseCollapsed, collapsed, notify}) => {
                     }
                 })
             } else if (x.currentMessage.type === 'DELETE') {
-                let index
-                list.forEach((o, i) => {
+                list.forEach(o => {
                     if (o.id === x.id) {
-                        index = i
+                        o.currentMessage.content = ""
                     }
                 })
-                list.splice(index, 1);
             }
 
             list = list.sort((a, b) => {
