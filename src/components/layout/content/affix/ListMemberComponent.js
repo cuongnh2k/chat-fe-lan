@@ -177,7 +177,7 @@ const ListMemberComponent = ({data1}) => {
                                             Xóa
                                         </Button>
                                 )
-                                : ""
+                                : null
                             }
                         </List.Item>
                     )}
