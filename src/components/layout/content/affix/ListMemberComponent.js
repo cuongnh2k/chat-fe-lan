@@ -5,7 +5,7 @@ import Api from "../../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 const {Text} = Typography;
-const ListMemberComponent = () => {
+const ListMemberComponent = ({data1}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [data, setData] = useState({loading: false, result: null})
     const navigate = useNavigate();
@@ -76,7 +76,7 @@ const ListMemberComponent = () => {
                                             tooltip: item.name
                                         }}
                                     >
-                                        {item.name}
+                                        {data1.result.ownerId === item.id ? "(Chủ kênh)" : ""} {item.name}
                                     </Text>
                                 }
                                 description={

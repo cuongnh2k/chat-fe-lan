@@ -110,6 +110,9 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                                             style={{
                                                 width: 200,
                                             }}
+                                            ellipsis={{
+                                                tooltip: item.type === "FRIEND" ? item.email : ""
+                                            }}
                                         >
                                             {item.type === "FRIEND" ? item.email : ""}
                                         </Text>

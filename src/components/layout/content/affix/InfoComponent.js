@@ -9,7 +9,7 @@ const InfoComponent = ({data}) => {
         {
             key: '1',
             label: (
-                <ListMemberComponent/>
+                <ListMemberComponent data1={data}/>
             ),
         },
         {
@@ -19,7 +19,7 @@ const InfoComponent = ({data}) => {
             ),
         },
     ];
-    if (data.result&&data.result.type === "FRIEND") {
+    if (data.result && data.result.type === "FRIEND") {
         items.shift()
     }
     return (
