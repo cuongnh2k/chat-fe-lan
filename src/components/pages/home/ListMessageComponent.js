@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Card, Dropdown, Flex, Image, List, Typography} from 'antd';
+import {Avatar, Card, Dropdown, Flex, Image, List, Tooltip, Typography} from 'antd';
 import {useSearchParams} from "react-router-dom";
 import UseFetch from "../../../hooks/UseFetch";
 import Api from "../../../api/Api";
@@ -195,18 +195,25 @@ const ListMessageComponent = ({setContent}) => {
                                     margin: "8px 0"
                                 }}
                             >
-                                <Avatar
-                                    style={{
-                                        minWidth: 48,
-                                        height: 48,
-                                        marginRight: 16
-                                    }}
-                                    src={item.sender.avatarUrl}
-                                />
+                                <Tooltip title={item.sender.name}>
+                                    <Avatar
+                                        style={{
+                                            minWidth: 48,
+                                            height: 48,
+                                            marginRight: 16
+                                        }}
+                                        src={item.sender.avatarUrl}
+                                    />
+                                </Tooltip>
                                 <Flex
                                     vertical={true}
                                 >
-                                    {new Date(item.updatedAt).toLocaleString()}
+                                    <Flex
+                                        vertical={true}
+                                    >
+                                        {/*<Flex>{item.sender.name}</Flex>*/}
+                                        <Flex>{new Date(item.updatedAt).toLocaleString()}</Flex>
+                                    </Flex>
                                     <Card
                                         style={{
                                             maxWidth: 600,

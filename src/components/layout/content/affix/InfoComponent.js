@@ -8,16 +8,30 @@ const InfoComponent = ({data}) => {
     let items = [];
     if (data.result && data.result.status === "ACCEPT") {
         items.push({
-            key: '2',
+            key: '1',
             label: (
                 <ListFileComponent/>
             ),
         },)
         if (data.result.type === 'GROUP') {
             items.push({
-                key: '1',
+                key: '2',
                 label: (
                     <ListMemberComponent data1={data}/>
+                ),
+            },)
+            items.push({
+                key: '3',
+                label: (
+                    `Rời nhóm`
+                ),
+            },)
+        }
+        else {
+            items.push({
+                key: '3',
+                label: (
+                    `Hủy kết bạn`
                 ),
             },)
         }
