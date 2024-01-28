@@ -13,7 +13,7 @@ const InfoComponent = ({data}) => {
                 <ListFileComponent/>
             ),
         },)
-        if (data.type === 'GROUP') {
+        if (data.result.type === 'GROUP') {
             items.push({
                 key: '1',
                 label: (
