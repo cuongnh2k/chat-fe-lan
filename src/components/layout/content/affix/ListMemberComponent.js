@@ -49,7 +49,7 @@ const ListMemberComponent = ({data1}) => {
         setValue(e.target.value);
     };
 
-    const reactUserGroup = (status, userId, name) => {
+    const reactUserGroup = (status, userId, message) => {
         const fetchAPI = async () => {
             setData(o => ({...o, loading: true}))
             const response = await UseFetch(Api.channelsChannelIdReactUserGroupPOST,
@@ -60,7 +60,7 @@ const ListMemberComponent = ({data1}) => {
             if (res.success) {
                 messageApi.open({
                     type: 'success',
-                    content: `Bạn đã ${status === 'ACCEPT' ? 'duyệt' : 'từ chối'} ${name}`,
+                    content: message,
                     duration: 3,
                 });
                 setData(o => ({...o, loading: false}))
@@ -150,20 +150,21 @@ const ListMemberComponent = ({data1}) => {
                                         ? <>
                                             <Button
                                                 disabled={data.loading}
-                                                onClick={() => reactUserGroup("ACCEPT", item.id, item.name)}
+                                                onClick={() => reactUserGroup("ACCEPT", item.id, `Bạn đã duyệt ${item.name}`)}
                                                 style={{marginLeft: 10, color: "green", borderColor: "green"}}
                                             >
                                                 Duyệt
                                             </Button>
                                             <Button
                                                 disabled={data.loading}
-                                                onClick={() => reactUserGroup("REJECT", item.id, item.name)}
+                                                onClick={() => reactUserGroup("REJECT", item.id, `Bạn đã từ chối ${item.name}`)}
                                                 style={{marginLeft: 10, color: "red", borderColor: "red"}}
                                             >
                                                 Từ chối
                                             </Button>
                                         </>
                                         : <Button
+                                            onClick={() => reactUserGroup("REJECT", item.id, `Bạn đã xóa ${item.name}`)}
                                             style={{
                                                 marginLeft: 10,
                                                 color: "red",
