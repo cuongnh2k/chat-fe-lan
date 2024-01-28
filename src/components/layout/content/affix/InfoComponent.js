@@ -14,6 +14,7 @@ const InfoComponent = ({data}) => {
     const [searchParams] = useSearchParams()
 
     let items = [];
+    const sub = jwtDecode(localStorage.getItem("token")).sub
     if (data.result && data.result.status === "ACCEPT") {
         items.push({
             key: '1',
@@ -28,12 +29,14 @@ const InfoComponent = ({data}) => {
                     <ListMemberComponent data1={data}/>
                 ),
             },)
-            items.push({
-                key: '3',
-                label: (
-                    <Text onClick={() => huy("GROUP")}>Rời nhóm</Text>
-                ),
-            },)
+            if (sub !== data.result.ownerId) {
+                items.push({
+                    key: '3',
+                    label: (
+                        <Text onClick={() => huy("GROUP")}>Rời nhóm</Text>
+                    ),
+                },)
+            }
         } else {
             items.push({
                 key: '3',
@@ -43,8 +46,6 @@ const InfoComponent = ({data}) => {
             },)
         }
     }
-
-    const sub = jwtDecode(localStorage.getItem("token")).sub
 
     const huy = (type) => {
         const fetchAPI = async () => {
