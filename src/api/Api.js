@@ -80,7 +80,7 @@ const Api = {
         contentType: "application/json",
     },
     channelsChannelIdReactUserGroupPOST: {
-        path: "/user/channels/{channelId}/react-user-group",
+        path: "/user/channels/",
         method: "POST",
         contentType: "application/json",
     },

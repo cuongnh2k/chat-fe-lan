@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Avatar, Button, List, Modal, Radio, Typography} from "antd";
+import {Avatar, Button, List, message, Modal, Radio, Typography} from "antd";
 import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
@@ -9,9 +9,10 @@ const {Text} = Typography;
 const ListMemberComponent = ({data1}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [data, setData] = useState({loading: false, result: null})
-    const [friend, setFriend] = useState([])
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
+    const [refresh, setRefresh] = useState(Math.random)
+    const [messageApi, contextHolder] = message.useMessage()
 
     useEffect(() => {
         if (isModalOpen === true) {
@@ -29,7 +30,7 @@ const ListMemberComponent = ({data1}) => {
             }
             fetchAPI()
         }
-    }, [searchParams, isModalOpen])
+    }, [searchParams, isModalOpen, refresh])
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -48,8 +49,33 @@ const ListMemberComponent = ({data1}) => {
         setValue(e.target.value);
     };
 
+    const reactUserGroup = (status, userId, name) => {
+        const fetchAPI = async () => {
+            setData(o => ({...o, loading: true}))
+            const response = await UseFetch(Api.channelsChannelIdReactUserGroupPOST,
+                `${searchParams.get("channelId")}/react-user-group`,
+                JSON.stringify({status: status, userId: userId})
+            )
+            const res = await response.json();
+            if (res.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: `Bạn đã ${status === 'ACCEPT' ? 'duyệt' : 'từ chối'} ${name}`,
+                    duration: 3,
+                });
+                setData(o => ({...o, loading: false}))
+                setRefresh(Math.random)
+            } else {
+                localStorage.removeItem("token")
+                navigate("/account")
+            }
+        }
+        fetchAPI()
+    }
+
     return (
         <>
+            {contextHolder}
             <Text
                 onClick={showModal}
             >
@@ -123,11 +149,15 @@ const ListMemberComponent = ({data1}) => {
                                 ? (value === 2
                                         ? <>
                                             <Button
+                                                disabled={data.loading}
+                                                onClick={() => reactUserGroup("ACCEPT", item.id, item.name)}
                                                 style={{marginLeft: 10, color: "green", borderColor: "green"}}
                                             >
-                                                Đồng ý
+                                                Duyệt
                                             </Button>
                                             <Button
+                                                disabled={data.loading}
+                                                onClick={() => reactUserGroup("REJECT", item.id, item.name)}
                                                 style={{marginLeft: 10, color: "red", borderColor: "red"}}
                                             >
                                                 Từ chối
