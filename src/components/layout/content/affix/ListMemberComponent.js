@@ -87,10 +87,13 @@ const ListMemberComponent = ({data1}) => {
                 onCancel={handleCancel}
                 footer={[]}
             >
-                <Radio.Group onChange={onChange} value={value}>
-                    <Radio value={1}>Thành viên</Radio>
-                    <Radio value={2}>Đang chờ</Radio>
-                </Radio.Group>
+                {sub === data1.result.ownerId ?
+                    <Radio.Group onChange={onChange} value={value}>
+                        <Radio value={1}>Thành viên</Radio>
+                        <Radio value={2}>Đang chờ</Radio>
+                    </Radio.Group>
+                    : null
+                }
                 <List
                     itemLayout="horizontal"
                     dataSource={data.result
