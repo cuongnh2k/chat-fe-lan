@@ -43,7 +43,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
         >
             <div
                 style={{
-                    visibility: data.result !== null ? "visible" : "hidden"
+                    visibility: data.result !== null ? (data.result.status !== 'ACCEPT' ? "hidden" : "visible") : "hidden"
                 }}
             >
                 {contextHolder}
