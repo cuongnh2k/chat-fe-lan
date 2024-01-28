@@ -203,37 +203,42 @@ const ListMessageComponent = ({setContent}) => {
                                     }}
                                     src={item.sender.avatarUrl}
                                 />
-                                <Card
-                                    style={{
-                                        maxWidth: 600,
-                                    }}
-                                    size="small"
-                                    bordered={false}
+                                <Flex
+                                    vertical={true}
                                 >
-                                    <Text>
-                                        {item.content}
-                                    </Text>
-                                    {item.files.map(o => {
-                                        return o.contentType.startsWith("image")
-                                            ? <Image src={o.url}/>
-                                            : (o.contentType.startsWith("video")
-                                                    ? <video width={632} height={632} controls>
-                                                        <source src={o.url} type={o.contentType}/>
-                                                    </video>
-                                                    : (o.contentType.startsWith("audio")
-                                                            ? <audio controls>
-                                                                <source src={o.url} type={o.contentType}/>
-                                                            </audio>
-                                                            : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
-                                                                    ? <iframe width={632} height={632} src={o.url}/>
-                                                                    : <a style={{color: "red"}} href={o.url}
-                                                                         target="_blank">{o.name}</a>
-                                                            )
-                                                    )
-                                            )
-                                    })
-                                    }
-                                </Card>
+                                    {new Date(item.updatedAt).toLocaleString()}
+                                    <Card
+                                        style={{
+                                            maxWidth: 600,
+                                        }}
+                                        size="small"
+                                        bordered={false}
+                                    >
+                                        <Text>
+                                            {item.content}
+                                        </Text>
+                                        {item.files.map(o => {
+                                            return o.contentType.startsWith("image")
+                                                ? <Image src={o.url}/>
+                                                : (o.contentType.startsWith("video")
+                                                        ? <video width={632} height={632} controls>
+                                                            <source src={o.url} type={o.contentType}/>
+                                                        </video>
+                                                        : (o.contentType.startsWith("audio")
+                                                                ? <audio controls>
+                                                                    <source src={o.url} type={o.contentType}/>
+                                                                </audio>
+                                                                : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
+                                                                        ? <iframe width={632} height={632} src={o.url}/>
+                                                                        : <a style={{color: "red"}} href={o.url}
+                                                                             target="_blank">{o.name}</a>
+                                                                )
+                                                        )
+                                                )
+                                        })
+                                        }
+                                    </Card>
+                                </Flex>
                             </Flex>
                             : <Flex
                                 key={item.id}
@@ -241,10 +246,12 @@ const ListMessageComponent = ({setContent}) => {
                                     margin: "8px 0"
                                 }}
                                 justify={"flex-end"}
+                                align="center"
                             >
                                 <Flex
                                     style={{
-                                        height: 24
+                                        height: 24,
+                                        marginTop: 15
                                     }}
                                 >
                                     <Dropdown
@@ -262,37 +269,42 @@ const ListMessageComponent = ({setContent}) => {
                                         />
                                     </Dropdown>
                                 </Flex>
-                                <Card
-                                    style={{
-                                        maxWidth: 664,
-                                    }}
-                                    size="small"
-                                    bordered={false}
+                                <Flex
+                                    vertical={true}
                                 >
-                                    <Text>
-                                        {item.content}
-                                    </Text>
-                                    {item.files.map(o => {
-                                        return o.contentType.startsWith("image")
-                                            ? <Image src={o.url}/>
-                                            : (o.contentType.startsWith("video")
-                                                    ? <video width={632} height={632} controls>
-                                                        <source src={o.url} type={o.contentType}/>
-                                                    </video>
-                                                    : (o.contentType.startsWith("audio")
-                                                            ? <audio controls>
-                                                                <source src={o.url} type={o.contentType}/>
-                                                            </audio>
-                                                            : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
-                                                                    ? <iframe width={632} height={632} src={o.url}/>
-                                                                    : <a style={{color: "red"}} href={o.url}
-                                                                         target="_blank">{o.name}</a>
-                                                            )
-                                                    )
-                                            )
-                                    })
-                                    }
-                                </Card>
+                                    {new Date(item.updatedAt).toLocaleString()}
+                                    <Card
+                                        style={{
+                                            maxWidth: 664,
+                                        }}
+                                        size="small"
+                                        bordered={false}
+                                    >
+                                        <Text>
+                                            {item.content}
+                                        </Text>
+                                        {item.files.map(o => {
+                                            return o.contentType.startsWith("image")
+                                                ? <Image src={o.url}/>
+                                                : (o.contentType.startsWith("video")
+                                                        ? <video width={632} height={632} controls>
+                                                            <source src={o.url} type={o.contentType}/>
+                                                        </video>
+                                                        : (o.contentType.startsWith("audio")
+                                                                ? <audio controls>
+                                                                    <source src={o.url} type={o.contentType}/>
+                                                                </audio>
+                                                                : (o.contentType === 'application/pdf' || o.contentType === 'text/html' || o.contentType === 'text/htm'
+                                                                        ? <iframe width={632} height={632} src={o.url}/>
+                                                                        : <a style={{color: "red"}} href={o.url}
+                                                                             target="_blank">{o.name}</a>
+                                                                )
+                                                        )
+                                                )
+                                        })
+                                        }
+                                    </Card>
+                                </Flex>
                             </Flex>
                     }}
                 />
