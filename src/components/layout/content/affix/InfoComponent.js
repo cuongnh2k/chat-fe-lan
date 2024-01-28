@@ -5,22 +5,22 @@ import ListMemberComponent from "./ListMemberComponent";
 import ListFileComponent from "./ListFileComponent";
 
 const InfoComponent = ({data}) => {
-    let items = [
-        {
-            key: '1',
-            label: (
-                <ListMemberComponent data1={data}/>
-            ),
-        },
-        {
+    let items = [];
+    if (data.result && data.result.status === "ACCEPT") {
+        items.push({
             key: '2',
             label: (
                 <ListFileComponent/>
             ),
-        },
-    ];
-    if (data.result && data.result.type === "FRIEND") {
-        items.shift()
+        },)
+        if (data.type === 'GROUP') {
+            items.push({
+                key: '1',
+                label: (
+                    <ListMemberComponent data1={data}/>
+                ),
+            },)
+        }
     }
     return (
         <Dropdown
