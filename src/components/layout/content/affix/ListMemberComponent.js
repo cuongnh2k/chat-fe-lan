@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {Avatar, List, Modal, Typography} from "antd";
+import {Avatar, Button, List, Modal, Radio, Typography} from "antd";
 import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
 const {Text} = Typography;
 const ListMemberComponent = ({data1}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [data, setData] = useState({loading: false, result: null})
+    const [friend, setFriend] = useState([])
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
 
@@ -38,6 +40,14 @@ const ListMemberComponent = ({data1}) => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+
+    const sub = jwtDecode(localStorage.getItem("token")).sub
+
+    const [value, setValue] = useState(1);
+    const onChange = (e) => {
+        setValue(e.target.value);
+    };
+
     return (
         <>
             <Text
@@ -46,15 +56,24 @@ const ListMemberComponent = ({data1}) => {
                 Thành viên
             </Text>
             <Modal
-                title="Thành viên"
                 open={isModalOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[]}
             >
+                <Radio.Group onChange={onChange} value={value}>
+                    <Radio value={1}>Thành viên</Radio>
+                    <Radio value={2}>Đang chờ</Radio>
+                </Radio.Group>
                 <List
                     itemLayout="horizontal"
-                    dataSource={data.result ? data.result.content : []}
+                    dataSource={data.result
+                        ? (value === 1
+                                ? data.result.content.filter(o => o.status === 'ACCEPT')
+                                : data.result.content.filter(o => o.status === 'NEW')
+                        )
+                        : []
+                    }
                     renderItem={(item, index) => (
                         <List.Item>
                             <List.Item.Meta
@@ -93,6 +112,13 @@ const ListMemberComponent = ({data1}) => {
                                     </Text>
                                 }
                             />
+                            {sub === item.id
+                                ? ""
+                                : (item.friendStatus === 'ACCEPT'
+                                        ? <Button disabled={true}>Bạn bè</Button>
+                                        : <Button>Kết bạn</Button>
+                                )
+                            }
                         </List.Item>
                     )}
                 />
