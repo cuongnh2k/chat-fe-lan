@@ -112,12 +112,38 @@ const ListMemberComponent = ({data1}) => {
                                     </Text>
                                 }
                             />
-                            {sub === item.id
-                                ? ""
-                                : (item.friendStatus === 'ACCEPT'
+                            {sub !== item.id && value === 1
+                                ? (item.friendStatus === 'ACCEPT'
                                         ? <Button disabled={true}>Bạn bè</Button>
                                         : <Button>Kết bạn</Button>
                                 )
+                                : null
+                            }
+                            {data1.result.ownerId === sub
+                                ? (value === 2
+                                        ? <>
+                                            <Button
+                                                style={{marginLeft: 10, color: "green", borderColor: "green"}}
+                                            >
+                                                Đồng ý
+                                            </Button>
+                                            <Button
+                                                style={{marginLeft: 10, color: "red", borderColor: "red"}}
+                                            >
+                                                Từ chối
+                                            </Button>
+                                        </>
+                                        : <Button
+                                            style={{
+                                                marginLeft: 10,
+                                                color: "red",
+                                                borderColor: "red"
+                                            }}
+                                        >
+                                            Xóa
+                                        </Button>
+                                )
+                                : ""
                             }
                         </List.Item>
                     )}

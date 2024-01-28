@@ -47,7 +47,7 @@ const EllipsisComponent = ({onRefresh}) => {
                     className="site-badge-count-109"
                     count={data.result ? data.result.content.length : 0}
                     style={{
-                        backgroundColor: '#52c41a',
+                        backgroundColor: 'red',
                     }}
                 />
                 </Text>
