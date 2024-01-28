@@ -73,6 +73,45 @@ const ListMemberComponent = ({data1}) => {
         fetchAPI()
     }
 
+    const addFriend = (userId) => {
+        const fetchAPI = async () => {
+            setData(o => ({...o, loading: true}))
+            const response = await UseFetch(Api.channelsAddUserFriendPOST,
+                "",
+                JSON.stringify({userId: userId})
+            )
+            const res = await response.json();
+            setData(o => ({...o, loading: false}))
+            if (res.success) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Gửi lời mời kết bạn thành công',
+                    duration: 3,
+                });
+                let newData = data.result
+                newData.content.forEach(o => {
+                    if (o.id === userId) {
+                        o.send = true
+                    }
+                })
+                setData(o => ({...o, result: newData}))
+            } else {
+                if (res.errorCode === 401) {
+                    localStorage.removeItem("token")
+                    navigate("/account")
+                } else {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Gửi lời mời kết bạn thất bại',
+                        duration: 1,
+                    });
+                }
+            }
+        }
+        fetchAPI()
+    }
+
+
     return (
         <>
             {contextHolder}
@@ -144,7 +183,9 @@ const ListMemberComponent = ({data1}) => {
                             {sub !== item.id && value === 1
                                 ? (item.friendStatus === 'ACCEPT'
                                         ? <Button disabled={true}>Bạn bè</Button>
-                                        : <Button>Kết bạn</Button>
+                                        :
+                                        <Button disabled={item.send || data.loading} onClick={() => addFriend(item.id)}>Kết
+                                            bạn</Button>
                                 )
                                 : null
                             }
