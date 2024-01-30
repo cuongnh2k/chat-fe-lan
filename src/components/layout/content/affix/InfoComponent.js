@@ -1,5 +1,5 @@
 import {InfoCircleOutlined} from "@ant-design/icons";
-import {Dropdown, Typography} from "antd";
+import {Dropdown, message, Typography} from "antd";
 import React from "react";
 import ListMemberComponent from "./ListMemberComponent";
 import ListFileComponent from "./ListFileComponent";
@@ -7,11 +7,13 @@ import UseFetch from "../../../../hooks/UseFetch";
 import Api from "../../../../api/Api";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
+import ChannelOwnerComponent from "./ChannelOwnerComponent";
 
 const {Text} = Typography;
-const InfoComponent = ({data}) => {
+const InfoComponent = ({data, changeRefresh}) => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams()
+    const [messageApi, contextHolder] = message.useMessage()
 
     let items = [];
     const sub = jwtDecode(localStorage.getItem("token")).sub
@@ -36,10 +38,17 @@ const InfoComponent = ({data}) => {
                         <Text onClick={() => huy("GROUP")}>Rời nhóm</Text>
                     ),
                 },)
+            } else {
+                items.push({
+                    key: '4',
+                    label: (
+                        <ChannelOwnerComponent data1={data} messageApi={messageApi} changeRefresh={changeRefresh}/>
+                    ),
+                },)
             }
         } else {
             items.push({
-                key: '3',
+                key: '5',
                 label: (
                     <Text onClick={() => huy("FRIEND")}>Hủy kết bạn</Text>
                 ),
@@ -73,22 +82,24 @@ const InfoComponent = ({data}) => {
     }
 
     return (
-        <Dropdown
-            menu={{items}}
-            placement="bottomRight"
-            arrow={{
-                pointAtCenter: true,
-            }}
-        >
-            <InfoCircleOutlined
-                style={{
-                    fontSize: 18,
-                    paddingLeft: 8,
-                    paddingRight: 0,
-                    cursor: "pointer"
+        <>{contextHolder}
+            <Dropdown
+                menu={{items}}
+                placement="bottomRight"
+                arrow={{
+                    pointAtCenter: true,
                 }}
-            />
-        </Dropdown>
+            >
+                <InfoCircleOutlined
+                    style={{
+                        fontSize: 18,
+                        paddingLeft: 8,
+                        paddingRight: 0,
+                        cursor: "pointer"
+                    }}
+                />
+            </Dropdown>
+        </>
     )
 }
 export default InfoComponent

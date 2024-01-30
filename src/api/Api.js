@@ -44,6 +44,11 @@ const Api = {
         method: "GET",
         contentType: "application/json",
     },
+    channelsChangeOwnerGroupPOST: {
+        path: "/user/channels/",
+        method: "POST",
+        contentType: "application/json",
+    },
     channelsChannelIdMessagesGET: {
         path: "/user/channels/",
         method: "GET",

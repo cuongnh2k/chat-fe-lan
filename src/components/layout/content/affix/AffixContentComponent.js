@@ -14,6 +14,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
     const [data, setData] = useState({loading: false, result: null})
     const [searchParams] = useSearchParams()
     const [messageApi, contextHolder] = message.useMessage()
+    const [refresh, setRefresh] = useState(Math.random)
 
     useEffect(() => {
         setData(o => ({...o, loading: true}))
@@ -32,7 +33,11 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
             }
         }
         fetchAPI()
-    }, [searchParams])
+    }, [searchParams, refresh])
+
+    const changeRefresh = () => {
+        setRefresh(Math.random)
+    }
 
     return (
         <Affix
@@ -132,7 +137,7 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                         ? <AddMemberComponent messageApi={messageApi}/>
                         : ""
                     }
-                    <InfoComponent data={data}/>
+                    <InfoComponent data={data} changeRefresh={changeRefresh}/>
                 </Flex>
             </div>
         </Affix>
