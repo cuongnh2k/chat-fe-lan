@@ -84,7 +84,7 @@ const ListMessageComponent = ({setContent}) => {
             setData(o => ({...o, loading: true}))
             const fetchAPI = async () => {
                 const response = await UseFetch(Api.channelsChannelIdMessagesGET,
-                    `${searchParams.get("channelId")}/messages?content=${searchParams.get("content")}&page=${searchParams.get("page")}&size=${search.size}`
+                    `${searchParams.get("channelId")}/messages?content=${searchParams.get("content")?searchParams.get("content"):""}&page=${searchParams.get("page")}&size=${search.size}`
                 )
                 const res = await response.json();
                 if (res.success) {
