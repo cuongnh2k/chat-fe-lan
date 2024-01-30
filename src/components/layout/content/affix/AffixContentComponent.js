@@ -64,63 +64,69 @@ const AffixContentComponent = ({clickCollapsed, collapsed}) => {
                 <Flex
                     style={{
                         paddingLeft: 16,
-                        paddingRight: 16
+                        paddingRight: 16,
                     }}
                 >
-                    <List
+                    <Flex
                         style={{
-                            width: "100%"
+                            width: 300
                         }}
-                        itemLayout="horizontal"
-                        dataSource={[
-                            {
-                                name: data.result && data.result.name,
-                                avatarUrl: data.result && data.result.avatarUrl,
-                                email: data.result && data.result.email,
-                                type: data.result && data.result.type
-                            },
-                        ]}
-                        renderItem={(item, index) => (
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={data.result
-                                        ? <Avatar
-                                            style={{
-                                                width: 48,
-                                                height: 48,
-                                            }}
-                                            src={item.avatarUrl}
-                                        />
-                                        : null
-                                    }
-                                    title={
-                                        <Text
-                                            style={{
-                                                width: 200,
-                                            }}
-                                            ellipsis={{
-                                                tooltip: item.name
-                                            }}
-                                        >
-                                            {item.name}
-                                        </Text>
-                                    }
-                                    description={
-                                        <Text
-                                            style={{
-                                                width: 200,
-                                            }}
-                                            ellipsis={{
-                                                tooltip: item.type === "FRIEND" ? item.email : ""
-                                            }}
-                                        >
-                                            {item.type === "FRIEND" ? item.email : ""}
-                                        </Text>
-                                    }
-                                />
-                            </List.Item>
-                        )}
-                    />
+                    >
+                        <List
+                            style={{
+                                width: "100%"
+                            }}
+                            itemLayout="horizontal"
+                            dataSource={[
+                                {
+                                    name: data.result && data.result.name,
+                                    avatarUrl: data.result && data.result.avatarUrl,
+                                    email: data.result && data.result.email,
+                                    type: data.result && data.result.type
+                                },
+                            ]}
+                            renderItem={(item, index) => (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        avatar={data.result
+                                            ? <Avatar
+                                                style={{
+                                                    width: 48,
+                                                    height: 48,
+                                                }}
+                                                src={item.avatarUrl}
+                                            />
+                                            : null
+                                        }
+                                        title={
+                                            <Text
+                                                style={{
+                                                    width: 200,
+                                                }}
+                                                ellipsis={{
+                                                    tooltip: item.name
+                                                }}
+                                            >
+                                                {item.name}
+                                            </Text>
+                                        }
+                                        description={
+                                            <Text
+                                                style={{
+                                                    width: 200,
+                                                }}
+                                                ellipsis={{
+                                                    tooltip: item.type === "FRIEND" ? item.email : ""
+                                                }}
+                                            >
+                                                {item.type === "FRIEND" ? item.email : ""}
+                                            </Text>
+                                        }
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </Flex>
                     <SearchComponent/>
                     {data.result && data.result.type === "GROUP"
                         ? <AddMemberComponent messageApi={messageApi}/>

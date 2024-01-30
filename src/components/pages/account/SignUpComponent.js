@@ -70,6 +70,9 @@ const SignUpComponent = ({onChangeTab, onSignUp, account, messageApi}) => {
                     autoComplete="off"
                 >
                     <Form.Item
+                        style={{
+                            marginTop: -45
+                        }}
                         label="Tên"
                         name="name"
                         rules={[
@@ -178,6 +181,9 @@ const SignUpComponent = ({onChangeTab, onSignUp, account, messageApi}) => {
                         Kích hoạt tài khoản
                     </div>
                     <Form.Item
+                        style={{
+                            marginBottom: -0
+                        }}
                         wrapperCol={{
                             offset: 0,
                             span: 24

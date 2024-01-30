@@ -1,15 +1,39 @@
 import {SearchOutlined} from "@ant-design/icons";
-import React from "react";
+import React, {useState} from "react";
+import {Flex, Input} from "antd";
+import {useSearchParams} from "react-router-dom";
 
 const SearchComponent = () => {
+    const [input, setInput] = useState("")
+    const [searchParams, setSearchParams] = useSearchParams()
+    const onChange = (e) => {
+        setInput(e.target.value)
+    };
+
+    const search = () => {
+        setSearchParams({channelId: searchParams.get("channelId"), page: 1, loadMore: false, content: input})
+    }
+
     return (
-        <SearchOutlined
+        <Flex
             style={{
-                fontSize: 18,
-                paddingLeft: 16,
-                paddingRight: 8
+                width: "100%",
+                height: 40,
+                marginTop: 15,
+                marginLeft: 16
             }}
-        />
+        >
+            <Input
+                style={{
+                    fontSize: 18
+                }}
+                placeholder="Tìm kiếm"
+                prefix={
+                    <SearchOutlined onClick={o => search()}/>
+                }
+                onChange={onChange}
+            />
+        </Flex>
     )
 }
 export default SearchComponent
