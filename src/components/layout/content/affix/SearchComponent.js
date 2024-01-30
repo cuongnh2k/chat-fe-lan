@@ -18,8 +18,8 @@ const SearchComponent = () => {
         <Flex
             style={{
                 width: "100%",
-                height: 40,
-                marginTop: 15,
+                height: 38,
+                marginTop: 16,
                 marginLeft: 16
             }}
         >
